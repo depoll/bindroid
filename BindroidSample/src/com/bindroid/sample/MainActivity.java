@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import com.bindroid.BindingMode;
 import com.bindroid.converters.AdapterConverter;
+import com.bindroid.converters.BoolConverter;
+import com.bindroid.converters.ToStringConverter;
 import com.bindroid.ui.EditTextTextProperty;
 import com.bindroid.ui.UiBinder;
 
@@ -24,6 +26,17 @@ public class MainActivity extends Activity {
     UiBinder.bind(this, R.id.TextView, "Text", model, "StringValue", BindingMode.OneWay);
     UiBinder.bind(this, R.id.ListView, "Adapter", model, "Dates", BindingMode.OneWay,
         new AdapterConverter(DateView.class));
+
+    UiBinder.bind(this, R.id.CountTextView, "Text", model, "Count", BindingMode.OneWay,
+        new ToStringConverter("Count: %d"));
+    UiBinder.bind(this, R.id.TextLengthView, "Text", model, "TextLength", BindingMode.OneWay,
+        new ToStringConverter("Text length: %d"));
+    UiBinder.bind(this, R.id.SumView, "Text", model, "CountPlusTextLength", BindingMode.OneWay,
+        new ToStringConverter("Sum: %d"));
+    UiBinder.bind(this, R.id.EvenSpinner, "Visibility", model, "CountIsEven", BindingMode.OneWay,
+        new BoolConverter());
+    UiBinder.bind(this, R.id.OddSpinner, "Visibility", model, "CountIsEven", BindingMode.OneWay,
+        new BoolConverter(true));
   }
 
   @Override

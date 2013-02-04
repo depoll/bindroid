@@ -18,6 +18,9 @@ public class ViewModel {
       @Override
       public void run() {
         getDates().add(0, new Date());
+        if (getCount() > 20) {
+          getDates().remove(getCount() - 1);
+        }
       }
     }, new Date(), 1000);
   }
@@ -32,5 +35,21 @@ public class ViewModel {
 
   public ObservableCollection<Date> getDates() {
     return dates.getValue();
+  }
+
+  public int getCount() {
+    return getDates().size();
+  }
+
+  public int getTextLength() {
+    return getStringValue().length();
+  }
+
+  public int getCountPlusTextLength() {
+    return getCount() + getTextLength();
+  }
+
+  public boolean getCountIsEven() {
+    return getCount() % 2 == 0;
   }
 }
