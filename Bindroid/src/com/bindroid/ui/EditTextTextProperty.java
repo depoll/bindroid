@@ -1,5 +1,7 @@
 package com.bindroid.ui;
 
+import java.lang.ref.WeakReference;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -11,14 +13,13 @@ import com.bindroid.utils.ObjectUtilities;
 import com.bindroid.utils.Property;
 
 public class EditTextTextProperty extends Property<String> {
-  private EditText target;
   private Trackable notifier = new Trackable();
+  private String lastValue = null;
 
   public EditTextTextProperty(EditText target) {
-    this.target = target;
+    final WeakReference<EditText> weakTarget = new WeakReference<EditText>(target);
     this.propertyType = String.class;
     target.addTextChangedListener(new TextWatcher() {
-
       @Override
       public void afterTextChanged(Editable s) {
         EditTextTextProperty.this.notifier.updateTrackers();
@@ -35,16 +36,24 @@ public class EditTextTextProperty extends Property<String> {
     this.getter = new Function<String>() {
       @Override
       public String evaluate() {
-        EditTextTextProperty.this.notifier.track();
-        return EditTextTextProperty.this.target.getText().toString();
+        EditText target = weakTarget.get();
+        if (target != null) {
+          EditTextTextProperty.this.notifier.track();
+          return lastValue = target.getText().toString();
+        } else {
+          return lastValue;
+        }
       }
     };
     this.setter = new Action<String>() {
       @Override
       public void invoke(String parameter) {
-        if (!ObjectUtilities.equals(parameter, EditTextTextProperty.this.target.getText()
-            .toString())) {
-          EditTextTextProperty.this.target.setText(parameter);
+        EditText target = weakTarget.get();
+        if (target != null) {
+          if (!ObjectUtilities.equals(parameter, target.getText().toString())) {
+            target.setText(parameter);
+            lastValue = parameter;
+          }
         }
       }
 

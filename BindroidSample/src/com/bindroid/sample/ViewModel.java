@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.bindroid.ObservableCollection;
 import com.bindroid.TrackableField;
 
@@ -17,10 +20,15 @@ public class ViewModel {
     timer.scheduleAtFixedRate(new TimerTask() {
       @Override
       public void run() {
-        getDates().add(0, new Date());
-        if (getCount() > 20) {
-          getDates().remove(getCount() - 1);
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+          @Override
+          public void run() {
+            getDates().add(0, new Date());
+            if (getCount() > 20) {
+              getDates().remove(getCount() - 1);
+            }
+          }
+        });
       }
     }, new Date(), 2000);
   }

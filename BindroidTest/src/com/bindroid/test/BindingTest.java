@@ -1,7 +1,8 @@
 package com.bindroid.test;
 
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
+import java.util.Arrays;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 
 import junit.framework.TestCase;
 
@@ -391,32 +392,19 @@ public class BindingTest extends TestCase {
   }
 
   public void testObjectsGetGCed() throws Exception {
-    Nestable n1 = new Nestable();
-    n1.setValue("Hello!");
-    Nestable n2 = new Nestable();
-    n2.setValue("Bonjour!");
+    Executors.newCachedThreadPool().submit(new Callable<Runnable>() {
+      @Override
+      public Runnable call() throws Exception {
+        Nestable n1 = new Nestable();
+        n1.setValue("Hello!");
+        Nestable n2 = new Nestable();
+        n2.setValue("Bonjour!");
 
-    Binding b = new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2, "Value"),
-        BindingMode.TwoWay);
-
-    ReferenceQueue<Object> refs = new ReferenceQueue<Object>();
-
-    WeakReference<Nestable> weakN1 = new WeakReference<Nestable>(n1, refs);
-    WeakReference<Nestable> weakN2 = new WeakReference<Nestable>(n2, refs);
-    WeakReference<Binding> weakBinding = new WeakReference<Binding>(b, refs);
-
-    n1 = n2 = null;
-    b = null;
-    int count = 0;
-    while (count < 3) {
-      Runtime.getRuntime().gc();
-      if (refs.remove(100) != null) {
-        count++;
+        Binding b = new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2,
+            "Value"), BindingMode.TwoWay);
+        return GCTestUtils.watchPointers(Arrays.asList(n1, n2, b));
       }
-    }
-    assertNull(weakN1.get());
-    assertNull(weakN2.get());
-    assertNull(weakBinding.get());
+    }).get().run();
   }
 
   public void testOneWayBindingsContinueInSpiteOfLosingReference() throws Exception {
@@ -444,84 +432,64 @@ public class BindingTest extends TestCase {
   }
 
   public void testOneWayBindingAllowsSourceToRelease() throws Exception {
-    Nestable n1 = new Nestable();
-    n1.setValue("Hello!");
-    Nestable n2 = new Nestable();
-    n2.setValue("Bonjour!");
+    Executors.newCachedThreadPool().submit(new Callable<Runnable>() {
+      @Override
+      public Runnable call() throws Exception {
+        Nestable n1 = new Nestable();
+        n1.setValue("Hello!");
+        Nestable n2 = new Nestable();
+        n2.setValue("Bonjour!");
 
-    ReflectedProperty sourceProperty = new ReflectedProperty(n2, "Value");
+        ReflectedProperty sourceProperty = new ReflectedProperty(n2, "Value");
 
-    new Binding(new ReflectedProperty(n1, "Value"), sourceProperty, BindingMode.OneWay);
+        new Binding(new ReflectedProperty(n1, "Value"), sourceProperty, BindingMode.OneWay);
 
-    Runtime.getRuntime().gc();
-    assertEquals("Bonjour!", n1.getValue());
-    assertEquals("Bonjour!", n2.getValue());
-    Runtime.getRuntime().gc();
-    n1.setValue("Shalom!");
-    Runtime.getRuntime().gc();
-    assertEquals("Shalom!", n1.getValue());
-    assertEquals("Bonjour!", n2.getValue());
-    Runtime.getRuntime().gc();
-    n2.setValue("Hola!");
-    Runtime.getRuntime().gc();
-    assertEquals("Hola!", n1.getValue());
-    assertEquals("Hola!", n2.getValue());
-
-    ReferenceQueue<Object> refs = new ReferenceQueue<Object>();
-    WeakReference<Nestable> weakN2 = new WeakReference<Nestable>(n2, refs);
-
-    n2 = null;
-    sourceProperty = null;
-    int count = 0;
-    int iterations = 0;
-    while (count < 1 && iterations < 100) {
-      Runtime.getRuntime().gc();
-      if (refs.remove(100) != null) {
-        count++;
+        Runtime.getRuntime().gc();
+        assertEquals("Bonjour!", n1.getValue());
+        assertEquals("Bonjour!", n2.getValue());
+        Runtime.getRuntime().gc();
+        n1.setValue("Shalom!");
+        Runtime.getRuntime().gc();
+        assertEquals("Shalom!", n1.getValue());
+        assertEquals("Bonjour!", n2.getValue());
+        Runtime.getRuntime().gc();
+        n2.setValue("Hola!");
+        Runtime.getRuntime().gc();
+        assertEquals("Hola!", n1.getValue());
+        assertEquals("Hola!", n2.getValue());
+        return GCTestUtils.watchPointers(Arrays.asList(n2));
       }
-      iterations++;
-    }
-    assertNull(weakN2.get());
+    }).get().run();
   }
 
   public void testOneWayToSourceBindingAllowsTargetToRelease() throws Exception {
-    Nestable n1 = new Nestable();
-    n1.setValue("Hello!");
-    Nestable n2 = new Nestable();
-    n2.setValue("Bonjour!");
+    Executors.newCachedThreadPool().submit(new Callable<Runnable>() {
+      @Override
+      public Runnable call() throws Exception {
+        Nestable n1 = new Nestable();
+        n1.setValue("Hello!");
+        Nestable n2 = new Nestable();
+        n2.setValue("Bonjour!");
 
-    ReflectedProperty targetProperty = new ReflectedProperty(n1, "Value");
+        ReflectedProperty targetProperty = new ReflectedProperty(n1, "Value");
 
-    new Binding(targetProperty, new ReflectedProperty(n2, "Value"), BindingMode.OneWayToSource);
+        new Binding(targetProperty, new ReflectedProperty(n2, "Value"), BindingMode.OneWayToSource);
 
-    Runtime.getRuntime().gc();
-    assertEquals("Hello!", n1.getValue());
-    assertEquals("Hello!", n2.getValue());
-    Runtime.getRuntime().gc();
-    n1.setValue("Shalom!");
-    Runtime.getRuntime().gc();
-    assertEquals("Shalom!", n1.getValue());
-    assertEquals("Shalom!", n2.getValue());
-    Runtime.getRuntime().gc();
-    n2.setValue("Hola!");
-    Runtime.getRuntime().gc();
-    assertEquals("Shalom!", n1.getValue());
-    assertEquals("Hola!", n2.getValue());
-
-    ReferenceQueue<Object> refs = new ReferenceQueue<Object>();
-    WeakReference<Nestable> weakN1 = new WeakReference<Nestable>(n1, refs);
-
-    n1 = null;
-    targetProperty = null;
-    int count = 0;
-    int iterations = 0;
-    while (count < 1 && iterations < 100) {
-      Runtime.getRuntime().gc();
-      if (refs.remove(100) != null) {
-        count++;
+        Runtime.getRuntime().gc();
+        assertEquals("Hello!", n1.getValue());
+        assertEquals("Hello!", n2.getValue());
+        Runtime.getRuntime().gc();
+        n1.setValue("Shalom!");
+        Runtime.getRuntime().gc();
+        assertEquals("Shalom!", n1.getValue());
+        assertEquals("Shalom!", n2.getValue());
+        Runtime.getRuntime().gc();
+        n2.setValue("Hola!");
+        Runtime.getRuntime().gc();
+        assertEquals("Shalom!", n1.getValue());
+        assertEquals("Hola!", n2.getValue());
+        return GCTestUtils.watchPointers(Arrays.asList(n1));
       }
-      iterations++;
-    }
-    assertNull(weakN1.get());
+    }).get().run();
   }
 }

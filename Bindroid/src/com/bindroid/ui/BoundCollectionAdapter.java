@@ -170,7 +170,7 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
   private void notifyCollectionChanged() {
     // Dispatch notifications to the main thread.
     final List<DataSetObserver> observers = new ArrayList<DataSetObserver>(this.observers);
-    new Handler(Looper.getMainLooper()).post(new Runnable() {
+    Runnable toRun = new Runnable() {
       @Override
       public void run() {
         presentedData = new ObservableCollection<T>(data);
@@ -189,7 +189,12 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
           obs.onChanged();
         }
       }
-    });
+    };
+    if (Looper.myLooper() == Looper.getMainLooper()) {
+      toRun.run();
+    } else {
+      new Handler(Looper.getMainLooper()).post(toRun);
+    }
   }
 
   @Override
