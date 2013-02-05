@@ -22,7 +22,7 @@ public class ViewModel {
           getDates().remove(getCount() - 1);
         }
       }
-    }, new Date(), 1000);
+    }, new Date(), 2000);
   }
 
   public String getStringValue() {
