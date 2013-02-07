@@ -37,7 +37,7 @@ public class ObservableCollectionTest extends TestCase {
           public Integer evaluate() {
             return coll.size();
           }
-        }, null), BindingMode.OneWay);
+        }, null), BindingMode.ONE_WAY);
     assertEquals(0, getValue());
     coll.add(1);
     assertEquals(1, getValue());
@@ -57,7 +57,7 @@ public class ObservableCollectionTest extends TestCase {
           public Boolean evaluate() {
             return coll.contains(1);
           }
-        }, null), BindingMode.OneWay);
+        }, null), BindingMode.ONE_WAY);
     assertEquals(false, getValue());
     coll.add(1);
     assertEquals(true, getValue());
@@ -79,7 +79,7 @@ public class ObservableCollectionTest extends TestCase {
           public Integer evaluate() {
             return coll.get(0);
           }
-        }, null), BindingMode.OneWay);
+        }, null), BindingMode.ONE_WAY);
     assertEquals(null, getValue());
     coll.add(1);
     assertEquals(1, getValue());

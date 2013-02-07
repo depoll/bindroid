@@ -20,7 +20,7 @@ public class DateView extends TextView implements BoundUi<Date> {
   public DateView(Context context) {
     super(context);
     UiBinder.bind(UiProperty.make(new ReflectedProperty(this, "Text")), this, "Date",
-        BindingMode.OneWay, new ToStringConverter("Added at: %s"));
+        BindingMode.ONE_WAY, new ToStringConverter("Added at: %s"));
   }
 
   @Override

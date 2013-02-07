@@ -56,7 +56,7 @@ public class UiBindingTests extends InstrumentationTestCase {
       public void run() {
         TextView tv = new TextView(getInstrumentation().getTargetContext());
         tv.setId(1);
-        UiBinder.bind(tv, 1, "Text", UiBindingTests.this, "StringValue", BindingMode.OneWay);
+        UiBinder.bind(tv, 1, "Text", UiBindingTests.this, "StringValue", BindingMode.ONE_WAY);
         assertEquals("Hello, World!", tv.getText());
         setStringValue("Bonjour, Monde!");
         assertEquals("Bonjour, Monde!", tv.getText());
@@ -75,7 +75,7 @@ public class UiBindingTests extends InstrumentationTestCase {
       public void run() {
         TextView tv = new TextView(getInstrumentation().getTargetContext());
         tv.setId(1);
-        UiBinder.bind(tv, 1, "Text", UiBindingTests.this, "BoolValue", BindingMode.OneWay,
+        UiBinder.bind(tv, 1, "Text", UiBindingTests.this, "BoolValue", BindingMode.ONE_WAY,
             new ToStringConverter());
         assertEquals("false", tv.getText());
         setBoolValue(true);
@@ -98,7 +98,7 @@ public class UiBindingTests extends InstrumentationTestCase {
         EditText et = new EditText(getInstrumentation().getTargetContext());
         et.setId(1);
         UiBinder.bind(new EditTextTextProperty(et), UiBindingTests.this, "StringValue",
-            BindingMode.TwoWay);
+            BindingMode.TWO_WAY);
         assertEquals("Hello, World!", et.getText().toString());
         setStringValue("Bonjour, Monde!");
         assertEquals("Bonjour, Monde!", et.getText().toString());
@@ -120,7 +120,7 @@ public class UiBindingTests extends InstrumentationTestCase {
         CheckBox cb = new CheckBox(getInstrumentation().getTargetContext());
         cb.setId(1);
         UiBinder.bind(new CompoundButtonCheckedProperty(cb), UiBindingTests.this, "BoolValue",
-            BindingMode.TwoWay);
+            BindingMode.TWO_WAY);
         assertFalse(cb.isChecked());
         setBoolValue(true);
         assertTrue(cb.isChecked());

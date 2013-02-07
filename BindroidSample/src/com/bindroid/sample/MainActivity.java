@@ -22,20 +22,20 @@ public class MainActivity extends Activity {
     ViewModel model = new ViewModel();
 
     UiBinder.bind(new EditTextTextProperty((EditText) this.findViewById(R.id.TextField)), model,
-        "StringValue", BindingMode.TwoWay);
-    UiBinder.bind(this, R.id.TextView, "Text", model, "StringValue", BindingMode.OneWay);
-    UiBinder.bind(this, R.id.ListView, "Adapter", model, "Dates", BindingMode.OneWay,
+        "StringValue", BindingMode.TWO_WAY);
+    UiBinder.bind(this, R.id.TextView, "Text", model, "StringValue", BindingMode.ONE_WAY);
+    UiBinder.bind(this, R.id.ListView, "Adapter", model, "Dates", BindingMode.ONE_WAY,
         new AdapterConverter(DateView.class));
 
-    UiBinder.bind(this, R.id.CountTextView, "Text", model, "Count", BindingMode.OneWay,
+    UiBinder.bind(this, R.id.CountTextView, "Text", model, "Count", BindingMode.ONE_WAY,
         new ToStringConverter("Count: %d"));
-    UiBinder.bind(this, R.id.TextLengthView, "Text", model, "TextLength", BindingMode.OneWay,
+    UiBinder.bind(this, R.id.TextLengthView, "Text", model, "TextLength", BindingMode.ONE_WAY,
         new ToStringConverter("Text length: %d"));
-    UiBinder.bind(this, R.id.SumView, "Text", model, "CountPlusTextLength", BindingMode.OneWay,
+    UiBinder.bind(this, R.id.SumView, "Text", model, "CountPlusTextLength", BindingMode.ONE_WAY,
         new ToStringConverter("Sum: %d"));
-    UiBinder.bind(this, R.id.EvenSpinner, "Visibility", model, "CountIsEven", BindingMode.OneWay,
+    UiBinder.bind(this, R.id.EvenSpinner, "Visibility", model, "CountIsEven", BindingMode.ONE_WAY,
         new BoolConverter());
-    UiBinder.bind(this, R.id.OddSpinner, "Visibility", model, "CountIsEven", BindingMode.OneWay,
+    UiBinder.bind(this, R.id.OddSpinner, "Visibility", model, "CountIsEven", BindingMode.ONE_WAY,
         new BoolConverter(true));
   }
 

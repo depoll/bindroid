@@ -211,7 +211,7 @@ public class ReflectedProperty extends Property<Object> {
     this.getter = new Function<Object>() {
       @Override
       public Object evaluate() {
-        Object current = getSource();
+        Object current = ReflectedProperty.this.getSource();
         for (int x = 0; x < ReflectedProperty.this.parts.length; x++) {
           PathPart curPart = ReflectedProperty.this.parts[x];
           try {
@@ -226,7 +226,7 @@ public class ReflectedProperty extends Property<Object> {
     this.setter = new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        Object current = getSource();
+        Object current = ReflectedProperty.this.getSource();
         for (int x = 0; x < ReflectedProperty.this.parts.length - 1; x++) {
           PathPart curPart = ReflectedProperty.this.parts[x];
           try {
@@ -245,9 +245,13 @@ public class ReflectedProperty extends Property<Object> {
     };
   }
 
+  protected Object getSource() {
+    return this.source;
+  }
+
   @Override
   public Class<?> getType() {
-    Object current = getSource();
+    Object current = this.getSource();
     for (int x = 0; x < this.parts.length - 1; x++) {
       PathPart curPart = this.parts[x];
       try {
@@ -262,9 +266,5 @@ public class ReflectedProperty extends Property<Object> {
     } catch (Exception e) {
       return Object.class;
     }
-  }
-
-  protected Object getSource() {
-    return source;
   }
 }

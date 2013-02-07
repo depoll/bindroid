@@ -28,9 +28,9 @@ public class CompoundButtonCheckedProperty extends Property<Boolean> {
         CompoundButton button = weakButton.get();
         if (button != null) {
           CompoundButtonCheckedProperty.this.trackable.track();
-          return lastValue = button.isChecked();
+          return CompoundButtonCheckedProperty.this.lastValue = button.isChecked();
         } else {
-          return lastValue;
+          return CompoundButtonCheckedProperty.this.lastValue;
         }
       }
     };
@@ -40,7 +40,7 @@ public class CompoundButtonCheckedProperty extends Property<Boolean> {
         CompoundButton button = weakButton.get();
         if (button != null) {
           button.setChecked(parameter);
-          lastValue = parameter;
+          CompoundButtonCheckedProperty.this.lastValue = parameter;
         }
       }
     };

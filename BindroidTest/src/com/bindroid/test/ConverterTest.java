@@ -47,7 +47,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get());
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get());
 
     assertEquals(Boolean.FALSE, obj1.getValue());
     obj2.setValue("Anything");
@@ -86,7 +86,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get(true));
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true));
 
     assertEquals(Boolean.TRUE, obj1.getValue());
     obj2.setValue("Anything");
@@ -125,7 +125,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get(false, true));
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(false, true));
 
     assertEquals(Boolean.FALSE, obj1.getValue());
     obj2.setValue("Anything");
@@ -164,7 +164,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get(true, true));
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true, true));
 
     assertEquals(Boolean.TRUE, obj1.getValue());
     obj2.setValue("Anything");
@@ -203,7 +203,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get());
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get());
 
     assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
     obj2.setValue("Anything");
@@ -242,7 +242,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get(true));
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true));
 
     assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
     obj2.setValue("Anything");
@@ -281,7 +281,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get(false, true));
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(false, true));
 
     assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
     obj2.setValue("Anything");
@@ -320,7 +320,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, BoolConverter.get(true, true));
+    }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true, true));
 
     assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
     obj2.setValue("Anything");
@@ -359,7 +359,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, new ToStringConverter());
+    }, Object.class), BindingMode.ONE_WAY, new ToStringConverter());
 
     assertEquals("null", obj1.getValue());
     obj2.setValue("Anything");
@@ -398,7 +398,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, new ToStringConverter("Whoa there: %s"));
+    }, Object.class), BindingMode.ONE_WAY, new ToStringConverter("Whoa there: %s"));
 
     assertEquals("Whoa there: null", obj1.getValue());
     obj2.setValue("Anything");
@@ -437,7 +437,7 @@ public class ConverterTest extends TestCase {
       public void invoke(Object parameter) {
         obj2.setValue(parameter);
       }
-    }, Object.class), BindingMode.OneWay, new AdapterConverter(View.class));
+    }, Object.class), BindingMode.ONE_WAY, new AdapterConverter(View.class));
 
     assertNull(obj1.getValue());
     obj2.setValue(Arrays.asList(1, 2, 3));

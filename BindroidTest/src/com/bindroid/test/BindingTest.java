@@ -24,7 +24,7 @@ public class BindingTest extends TestCase {
     n2.getChild().setValue("Yo!");
 
     new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2, "Child.Value"),
-        BindingMode.TwoWay);
+        BindingMode.TWO_WAY);
 
     assertEquals("Yo!", n1.getValue());
     assertEquals("Bonjour!", n2.getValue());
@@ -84,7 +84,7 @@ public class BindingTest extends TestCase {
       public void invoke(String parameter) {
         n2.setValue(parameter);
       }
-    }, String.class), BindingMode.OneWay);
+    }, String.class), BindingMode.ONE_WAY);
 
     assertEquals("Bonjour!", n1.getValue());
     assertEquals("Bonjour!", n2.getValue());
@@ -122,7 +122,7 @@ public class BindingTest extends TestCase {
       public void invoke(String parameter) {
         n2.setValue(parameter);
       }
-    }, String.class), BindingMode.OneWay, new ValueConverter() {
+    }, String.class), BindingMode.ONE_WAY, new ValueConverter() {
       @Override
       public Object convertToSource(Object targetValue, Class<?> sourceType) {
         if (("" + targetValue).endsWith("bar") || ("" + targetValue).endsWith("foo")) {
@@ -176,7 +176,7 @@ public class BindingTest extends TestCase {
       public void invoke(String parameter) {
         n2.setValue(parameter);
       }
-    }, String.class), BindingMode.OneWayToSource, new ValueConverter() {
+    }, String.class), BindingMode.ONE_WAY_TO_SOURCE, new ValueConverter() {
       @Override
       public Object convertToSource(Object targetValue, Class<?> sourceType) {
         if (("" + targetValue).endsWith("bar") || ("" + targetValue).endsWith("foo")) {
@@ -230,7 +230,7 @@ public class BindingTest extends TestCase {
       public void invoke(String parameter) {
         n2.setValue(parameter);
       }
-    }, String.class), BindingMode.TwoWay, new ValueConverter() {
+    }, String.class), BindingMode.TWO_WAY, new ValueConverter() {
       @Override
       public Object convertToSource(Object targetValue, Class<?> sourceType) {
         if (("" + targetValue).endsWith("bar") || ("" + targetValue).endsWith("foo")) {
@@ -265,7 +265,7 @@ public class BindingTest extends TestCase {
     n2.setValue("Bonjour!");
 
     new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2, "Value"),
-        BindingMode.OneWay);
+        BindingMode.ONE_WAY);
 
     assertEquals("Bonjour!", n1.getValue());
     assertEquals("Bonjour!", n2.getValue());
@@ -303,7 +303,7 @@ public class BindingTest extends TestCase {
       public void invoke(String parameter) {
         n2.setValue(parameter);
       }
-    }, String.class), BindingMode.OneWayToSource);
+    }, String.class), BindingMode.ONE_WAY_TO_SOURCE);
 
     assertEquals("Hello!", n1.getValue());
     assertEquals("Hello!", n2.getValue());
@@ -322,7 +322,7 @@ public class BindingTest extends TestCase {
     n2.setValue("Bonjour!");
 
     new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2, "Value"),
-        BindingMode.OneWayToSource);
+        BindingMode.ONE_WAY_TO_SOURCE);
 
     assertEquals("Hello!", n1.getValue());
     assertEquals("Hello!", n2.getValue());
@@ -360,7 +360,7 @@ public class BindingTest extends TestCase {
       public void invoke(String parameter) {
         n2.setValue(parameter);
       }
-    }, String.class), BindingMode.TwoWay);
+    }, String.class), BindingMode.TWO_WAY);
 
     assertEquals("Bonjour!", n1.getValue());
     assertEquals("Bonjour!", n2.getValue());
@@ -379,7 +379,7 @@ public class BindingTest extends TestCase {
     n2.setValue("Bonjour!");
 
     new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2, "Value"),
-        BindingMode.TwoWay);
+        BindingMode.TWO_WAY);
 
     assertEquals("Bonjour!", n1.getValue());
     assertEquals("Bonjour!", n2.getValue());
@@ -401,7 +401,7 @@ public class BindingTest extends TestCase {
         n2.setValue("Bonjour!");
 
         Binding b = new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2,
-            "Value"), BindingMode.TwoWay);
+            "Value"), BindingMode.TWO_WAY);
         return GCTestUtils.watchPointers(Arrays.asList(n1, n2, b));
       }
     }).get().run();
@@ -414,7 +414,7 @@ public class BindingTest extends TestCase {
     n2.setValue("Bonjour!");
 
     new Binding(new ReflectedProperty(n1, "Value"), new ReflectedProperty(n2, "Value"),
-        BindingMode.OneWay);
+        BindingMode.ONE_WAY);
 
     Runtime.getRuntime().gc();
     assertEquals("Bonjour!", n1.getValue());
@@ -442,7 +442,7 @@ public class BindingTest extends TestCase {
 
         ReflectedProperty sourceProperty = new ReflectedProperty(n2, "Value");
 
-        new Binding(new ReflectedProperty(n1, "Value"), sourceProperty, BindingMode.OneWay);
+        new Binding(new ReflectedProperty(n1, "Value"), sourceProperty, BindingMode.ONE_WAY);
 
         Runtime.getRuntime().gc();
         assertEquals("Bonjour!", n1.getValue());
@@ -473,7 +473,7 @@ public class BindingTest extends TestCase {
 
         ReflectedProperty targetProperty = new ReflectedProperty(n1, "Value");
 
-        new Binding(targetProperty, new ReflectedProperty(n2, "Value"), BindingMode.OneWayToSource);
+        new Binding(targetProperty, new ReflectedProperty(n2, "Value"), BindingMode.ONE_WAY_TO_SOURCE);
 
         Runtime.getRuntime().gc();
         assertEquals("Hello!", n1.getValue());
