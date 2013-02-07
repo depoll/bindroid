@@ -39,9 +39,9 @@ public class EditTextTextProperty extends Property<String> {
         EditText target = weakTarget.get();
         if (target != null) {
           EditTextTextProperty.this.notifier.track();
-          return lastValue = target.getText().toString();
+          return EditTextTextProperty.this.lastValue = target.getText().toString();
         } else {
-          return lastValue;
+          return EditTextTextProperty.this.lastValue;
         }
       }
     };
@@ -52,7 +52,7 @@ public class EditTextTextProperty extends Property<String> {
         if (target != null) {
           if (!ObjectUtilities.equals(parameter, target.getText().toString())) {
             target.setText(parameter);
-            lastValue = parameter;
+            EditTextTextProperty.this.lastValue = parameter;
           }
         }
       }

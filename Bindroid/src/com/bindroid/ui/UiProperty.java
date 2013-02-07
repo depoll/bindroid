@@ -16,7 +16,7 @@ public class UiProperty<T> extends Property<T> {
   private Property<T> property;
 
   private static final Handler UI_THREAD_HANDLER = new Handler(Looper.getMainLooper());
-  
+
   public static <T> UiProperty<T> make(Property<T> property) {
     return new UiProperty<T>(property);
   }
@@ -33,6 +33,7 @@ public class UiProperty<T> extends Property<T> {
           final AtomicReference<T> ref = new AtomicReference<T>();
           synchronized (ref) {
             UI_THREAD_HANDLER.post(new Runnable() {
+              @Override
               public void run() {
                 synchronized (ref) {
                   ref.set(UiProperty.this.property.getValue());

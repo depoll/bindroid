@@ -8,6 +8,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
 
+/**
+ * A {@link List} implementation that implements Trackable on all of its methods, notifying
+ * {@link Tracker}s whenever a change to the list occurs.
+ * 
+ * @param <T>
+ *          The type of object in the List.
+ */
 public class ObservableCollection<T> extends Trackable implements List<T> {
   private List<T> backingStore;
   private List<Long> ids;
@@ -15,10 +22,19 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
   private Stack<Long> returnedIds;
   private Trackable trackable = this;
 
+  /**
+   * Constructs a new, empty, {@link ArrayList}-backed ObservableCollection.
+   */
   public ObservableCollection() {
     this(new ArrayList<T>());
   }
 
+  /**
+   * Constructs a new ObservableCollection backed by the given {@link List} implementation.
+   * 
+   * @param backingStore
+   *          The list implementation for the ObservableCollection.
+   */
   public ObservableCollection(List<T> backingStore) {
     this.backingStore = backingStore;
     this.ids = new ArrayList<Long>();
@@ -28,6 +44,13 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
     }
   }
 
+  /**
+   * A utility function for cloning an ObservableCollection. Object identifiers will remain the same
+   * in the cloned collection.
+   * 
+   * @param toClone
+   *          The ObservableCollection to clone.
+   */
   public ObservableCollection(ObservableCollection<T> toClone) {
     this.backingStore = new ArrayList<T>(toClone.backingStore);
     this.ids = new ArrayList<Long>(toClone.ids);
@@ -104,6 +127,14 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
     return this.backingStore.get(location);
   }
 
+  /**
+   * Gets a list-unique identifier associated with the object at the given index. This is useful for
+   * UI to ensure that UI can be reused when the collection changes.
+   * 
+   * @param index
+   *          The index for which an identifier should be retrieved.
+   * @return The list-unique identifier for the object at the given index.
+   */
   public long getId(int index) {
     return this.ids.get(index);
   }
@@ -206,7 +237,7 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
   }
 
   private void returnId(long id) {
-    // this.returnedIds.push(id);
+    this.returnedIds.push(id);
   }
 
   @Override

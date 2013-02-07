@@ -4,24 +4,50 @@ import java.util.List;
 
 import android.view.View;
 
+import com.bindroid.BindingMode;
 import com.bindroid.ValueConverter;
 
+/**
+ * A {@link ValueConverter} for converting to boolean values or visibilities in
+ * {@link BindingMode#ONE_WAY} bindings.
+ */
 public class BoolConverter extends ValueConverter {
-  private static ValueConverter normal = new BoolConverter();
-  private static ValueConverter inverted = new BoolConverter(true);
-  private static ValueConverter invertedZeroFalse = new BoolConverter(true, true);
-  private static ValueConverter normalZeroFalse = new BoolConverter(false, true);
+  private static final ValueConverter normal = new BoolConverter();
+  private static final ValueConverter inverted = new BoolConverter(true);
+  private static final ValueConverter invertedZeroFalse = new BoolConverter(true, true);
+  private static final ValueConverter normalZeroFalse = new BoolConverter(false, true);
 
+  /**
+   * @return A BoolConverter that treats {@code null}, {@code 0}, and {@code false} as false, while
+   *         everything else is considered true.
+   */
   public static ValueConverter get() {
     return BoolConverter.get(false, false);
   }
 
+  /**
+   * Gets a standard BoolConverter, optionally inverting the values it returns.
+   * 
+   * @param invert
+   *          Whether to invert the standard truthiness of the values.
+   * @return A BoolConverter properly configured.
+   */
   public static ValueConverter get(boolean invert) {
     return BoolConverter.get(invert, false);
   }
 
-  public static ValueConverter get(boolean invert, boolean zeroLengthArrayIsFalse) {
-    if (zeroLengthArrayIsFalse) {
+  /**
+   * Gets a standard BoolConverter, optionally inverting the values it returns, and optionally
+   * considering a zero-length list to be a falsey value.
+   * 
+   * @param invert
+   *          Whether to invert the standard truthiness of the values.
+   * @param zeroLengthListIsFalse
+   *          Whether a zero-length list should be considered falsey.
+   * @return A BoolConverter properly configured.
+   */
+  public static ValueConverter get(boolean invert, boolean zeroLengthListIsFalse) {
+    if (zeroLengthListIsFalse) {
       if (invert) {
         return BoolConverter.invertedZeroFalse;
       } else {
@@ -36,7 +62,7 @@ public class BoolConverter extends ValueConverter {
 
   private boolean invert;
 
-  private boolean zeroLengthArrayIsFalse;
+  private boolean zeroLengthListIsFalse;
 
   public BoolConverter() {
     this(false);
@@ -46,9 +72,9 @@ public class BoolConverter extends ValueConverter {
     this(invert, false);
   }
 
-  public BoolConverter(boolean invert, boolean zeroLengthArrayIsFalse) {
+  public BoolConverter(boolean invert, boolean zeroLengthListIsFalse) {
     this.setInvert(invert);
-    this.setZeroLengthArrayIsFalse(zeroLengthArrayIsFalse);
+    this.setZeroLengthListIsFalse(zeroLengthListIsFalse);
   }
 
   @Override
@@ -63,7 +89,7 @@ public class BoolConverter extends ValueConverter {
       if (value == null) {
         value = Boolean.valueOf(false);
       }
-      if (this.getZeroLengthArrayIsFalse() && value instanceof List) {
+      if (this.getZeroLengthListIsFalse() && value instanceof List) {
         if (((List<?>) value).size() == 0) {
           value = Boolean.valueOf(false);
         } else {
@@ -95,20 +121,20 @@ public class BoolConverter extends ValueConverter {
     }
   }
 
-  public boolean getInvert() {
+  private boolean getInvert() {
     return this.invert;
   }
 
-  public boolean getZeroLengthArrayIsFalse() {
-    return this.zeroLengthArrayIsFalse;
+  private boolean getZeroLengthListIsFalse() {
+    return this.zeroLengthListIsFalse;
   }
 
   private void setInvert(boolean value) {
     this.invert = value;
   }
 
-  private void setZeroLengthArrayIsFalse(boolean value) {
-    this.zeroLengthArrayIsFalse = value;
+  private void setZeroLengthListIsFalse(boolean value) {
+    this.zeroLengthListIsFalse = value;
   }
 
 }

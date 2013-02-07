@@ -5,7 +5,16 @@ import java.lang.ref.WeakReference;
 import com.bindroid.utils.Property;
 import com.bindroid.utils.WeakenedProperty;
 
+/**
+ * Allows two trackable properties to be bound together such that their values remain in sync. It
+ * supports one-way and two-way bindings to any properties that use {@link Trackable}s.
+ * ValueConverters allow conversions between the source and target properties to be applied in the
+ * binding process.
+ */
 public class Binding {
+  /**
+   * A tracker for the Source property.
+   */
   private class SourceTracker implements Tracker {
     /**
      * Keeps a strong reference to the property to prevent garbage collection of the Property (which
@@ -20,11 +29,15 @@ public class Binding {
       this.property = property;
     }
 
+    @Override
     public void update() {
-      applySourceToTarget();
+      Binding.this.applySourceToTarget();
     }
   }
 
+  /**
+   * A tracker for the Target property.
+   */
   private class TargetTracker implements Tracker {
     /**
      * Keeps a strong reference to the property to prevent garbage collection of the Property (which
@@ -39,8 +52,9 @@ public class Binding {
       this.property = property;
     }
 
+    @Override
     public void update() {
-      applyTargetToSource();
+      Binding.this.applyTargetToSource();
     }
   }
 
@@ -54,14 +68,44 @@ public class Binding {
 
   private WeakReference<Binding> weakToMe;
 
+  /**
+   * Constructs a simple one-way binding between the given properties.
+   * 
+   * @param targetProperty
+   *          The target property, whose value will be set to match the source property.
+   * @param sourceProperty
+   *          The source property, whose value will drive the binding.
+   */
   public Binding(Property<?> targetProperty, Property<?> sourceProperty) {
-    this(targetProperty, sourceProperty, BindingMode.OneWay);
+    this(targetProperty, sourceProperty, BindingMode.ONE_WAY);
   }
 
+  /**
+   * Constructs a binding between the given properties.
+   * 
+   * @param targetProperty
+   *          The target property.
+   * @param sourceProperty
+   *          The source property.
+   * @param mode
+   *          The BindingMode for the binding.
+   */
   public Binding(Property<?> targetProperty, Property<?> sourceProperty, BindingMode mode) {
     this(targetProperty, sourceProperty, mode, ValueConverter.getDefaultConverter());
   }
 
+  /**
+   * Constructs a binding between the given properties.
+   * 
+   * @param targetProperty
+   *          The target property.
+   * @param sourceProperty
+   *          The source property.
+   * @param mode
+   *          The BindingMode for the binding.
+   * @param converter
+   *          A ValueConverter to be applied whenever changes are detected.
+   */
   public Binding(Property<?> targetProperty, Property<?> sourceProperty, BindingMode mode,
       ValueConverter converter) {
     this.weakToMe = new WeakReference<Binding>(this);
@@ -72,9 +116,9 @@ public class Binding {
 
     // Weaken the property references to allow the source/target to be GC'd if all other references
     // are gone.
-    if (mode == BindingMode.OneWay) {
+    if (mode == BindingMode.ONE_WAY) {
       sourceProperty = WeakenedProperty.weaken(sourceProperty);
-    } else if (mode == BindingMode.OneWayToSource) {
+    } else if (mode == BindingMode.ONE_WAY_TO_SOURCE) {
       targetProperty = WeakenedProperty.weaken(targetProperty);
     }
 
@@ -88,7 +132,7 @@ public class Binding {
   @SuppressWarnings("unchecked")
   private void applySourceToTarget() {
     try {
-      if (!(this.mode == BindingMode.TwoWay || this.mode == BindingMode.OneWay)) {
+      if (!(this.mode == BindingMode.TWO_WAY || this.mode == BindingMode.ONE_WAY)) {
         return;
       }
       if (this.sourceProperty.getGetter() == null || this.targetProperty.getSetter() == null) {
@@ -109,7 +153,7 @@ public class Binding {
   @SuppressWarnings("unchecked")
   private void applyTargetToSource() {
     try {
-      if (!(this.mode == BindingMode.TwoWay || this.mode == BindingMode.OneWayToSource)) {
+      if (!(this.mode == BindingMode.TWO_WAY || this.mode == BindingMode.ONE_WAY_TO_SOURCE)) {
         return;
       }
       if (this.targetProperty.getGetter() == null || this.sourceProperty.getSetter() == null) {
@@ -127,27 +171,14 @@ public class Binding {
     }
   }
 
-  public ValueConverter getConverter() {
-    return this.converter;
-  }
-
-  public boolean getIsLoggingEnabled() {
-    return this.isLoggingEnabled;
-  }
-
+  /**
+   * @return The BindingMode for this binding.
+   */
   public BindingMode getMode() {
     return this.mode;
   }
 
-  public Property<?> getSourceProperty() {
-    return this.sourceProperty;
-  }
-
-  public Property<?> getTargetProperty() {
-    return this.targetProperty;
-  }
-
-  public WeakReference<Binding> getWeakRef() {
+  WeakReference<Binding> getWeakRef() {
     return this.weakToMe;
   }
 
@@ -156,6 +187,19 @@ public class Binding {
     this.applyTargetToSource();
   }
 
+  /**
+   * @return Whether logging is enabled.
+   */
+  public boolean isLoggingEnabled() {
+    return this.isLoggingEnabled;
+  }
+
+  /**
+   * Sets whether logging to the default error stream when errors occur in applying a binding.
+   * 
+   * @param log
+   *          Whether logging is enabled.
+   */
   public void setIsLoggingEnabled(boolean log) {
     this.isLoggingEnabled = log;
   }

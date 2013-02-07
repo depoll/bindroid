@@ -68,7 +68,7 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     this.tracker = new Tracker() {
       @Override
       public void update() {
-        synchronized (observers) {
+        synchronized (BoundCollectionAdapter.this.observers) {
           BoundCollectionAdapter.this.notifyCollectionChanged();
           Trackable.track(BoundCollectionAdapter.this.tracker,
               BoundCollectionAdapter.this.trackAction);
@@ -76,10 +76,6 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
       }
     };
     Trackable.track(BoundCollectionAdapter.this.tracker, this.trackAction);
-  }
-
-  public ObservableCollection<T> getData() {
-    return data;
   }
 
   @Override
@@ -90,6 +86,10 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
   @Override
   public int getCount() {
     return this.presentedData.size();
+  }
+
+  public ObservableCollection<T> getData() {
+    return this.data;
   }
 
   @Override
@@ -124,7 +124,7 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
   @SuppressWarnings("unchecked")
   private View getView(int position, View convertView, ViewGroup parent,
       Constructor<? extends View> viewConstructor) {
-    synchronized (observers) {
+    synchronized (this.observers) {
       T dataItem = this.presentedData.get(position);
       if (this.cachedViews != null && this.cachedViews.containsKey(dataItem)) {
         return this.cachedViews.get(dataItem);
@@ -173,16 +173,16 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     Runnable toRun = new Runnable() {
       @Override
       public void run() {
-        presentedData = new ObservableCollection<T>(data);
+        BoundCollectionAdapter.this.presentedData = new ObservableCollection<T>(BoundCollectionAdapter.this.data);
 
-        if (cachedViews != null) {
+        if (BoundCollectionAdapter.this.cachedViews != null) {
           Map<T, View> newCache = new HashMap<T, View>();
-          for (T item : presentedData) {
-            if (cachedViews.containsKey(item)) {
-              newCache.put(item, cachedViews.get(item));
+          for (T item : BoundCollectionAdapter.this.presentedData) {
+            if (BoundCollectionAdapter.this.cachedViews.containsKey(item)) {
+              newCache.put(item, BoundCollectionAdapter.this.cachedViews.get(item));
             }
           }
-          cachedViews = newCache;
+          BoundCollectionAdapter.this.cachedViews = newCache;
         }
 
         for (DataSetObserver obs : observers) {
