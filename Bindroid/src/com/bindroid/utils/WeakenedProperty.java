@@ -2,7 +2,21 @@ package com.bindroid.utils;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * Creates a property that holds a weak reference to its target property.
+ * 
+ * @param <T>
+ *          the type of the property.
+ */
 public class WeakenedProperty<T> extends Property<T> {
+  /**
+   * Weakens a given property. The caller should hold a reference to this property for as long as
+   * the object should be pinned in memory.
+   * 
+   * @param property
+   *          the property to weaken.
+   * @return a weakened property.
+   */
   public static <T> WeakenedProperty<T> weaken(Property<T> property) {
     return new WeakenedProperty<T>(property);
   }

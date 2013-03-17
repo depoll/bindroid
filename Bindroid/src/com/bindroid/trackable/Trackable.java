@@ -12,10 +12,10 @@ import com.bindroid.utils.Function;
  * that allow a Tracker to evaluate an {@link Action} or {@link Function} while subscribing to
  * notifications for any trackers used during that evaluation.
  * 
- * Most uses of raw Trackables will be {@link TrackableField}s and {@link TrackableCollection}s.
- * Raw Trackables are primarily useful when manually wrapping the behavior of an object that uses
- * the Listener pattern for its notifications, calling {@link #track()} in the getter for the
- * property and {@link #updateTrackers()} when the Listener notifies of a change to its value.
+ * Most uses of raw Trackables will be {@link TrackableField}s and {@link TrackableCollection}s. Raw
+ * Trackables are primarily useful when manually wrapping the behavior of an object that uses the
+ * Listener pattern for its notifications, calling {@link #track()} in the getter for the property
+ * and {@link #updateTrackers()} when the Listener notifies of a change to its value.
  * 
  * Trackable instances are meant to be as lightweight as possible in order to minimize their
  * overhead when used in large numbers of objects.

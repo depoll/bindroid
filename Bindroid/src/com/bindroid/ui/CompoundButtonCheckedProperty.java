@@ -10,10 +10,20 @@ import com.bindroid.utils.Action;
 import com.bindroid.utils.Function;
 import com.bindroid.utils.Property;
 
+/**
+ * Represents the "Checked" property of a {@link CompoundButton} (e.g. a CheckBox or ToggleButton),
+ * allowing for two-way bindings.
+ */
 public class CompoundButtonCheckedProperty extends Property<Boolean> {
   private Trackable trackable = new Trackable();
   private boolean lastValue = false;
 
+  /**
+   * Constructs a CompoundButtonCheckedProperty for a {@link CompoundButton}.
+   * 
+   * @param button
+   *          the button being bound.
+   */
   public CompoundButtonCheckedProperty(CompoundButton button) {
     final WeakReference<CompoundButton> weakButton = new WeakReference<CompoundButton>(button);
     button.setOnCheckedChangeListener(new OnCheckedChangeListener() {

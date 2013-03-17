@@ -17,6 +17,13 @@ public class UiProperty<T> extends Property<T> {
 
   private static final Handler UI_THREAD_HANDLER = new Handler(Looper.getMainLooper());
 
+  /**
+   * Creates a UIProperty for the given property.
+   * 
+   * @param property
+   *          the property to wrap.
+   * @return the new property, whose getters and setters will dispatch to the UI thread.
+   */
   public static <T> UiProperty<T> make(Property<T> property) {
     return new UiProperty<T>(property);
   }

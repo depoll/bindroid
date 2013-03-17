@@ -1,8 +1,8 @@
 package com.bindroid.trackable;
 
 /**
- * Provides a {@link TrackableField}-like implementation for double primitives,
- * allowing you to avoid the cost of boxing and unboxing values.
+ * Provides a {@link TrackableField}-like implementation for double primitives, allowing you to
+ * avoid the cost of boxing and unboxing values.
  */
 public class TrackableDouble extends Trackable {
   protected double value;

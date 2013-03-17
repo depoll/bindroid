@@ -21,6 +21,16 @@ import com.bindroid.trackable.Trackable;
 import com.bindroid.trackable.Tracker;
 import com.bindroid.utils.Action;
 
+/**
+ * Provides a {@link ListAdapter} or {@link SpinnerAdapter} to wrap a {@link TrackableCollection},
+ * listening for changes to the collection and notifying any UI using the adapter of those changes.
+ * 
+ * If the {@link View} type that this adapter creates implements {@link BoundUi}, each item the
+ * adapter creates will be bound to its corresponding data value.
+ * 
+ * @param <T>
+ *          the type of object in the collection.
+ */
 public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
   private TrackableCollection<T> data;
   private TrackableCollection<T> presentedData;
@@ -39,15 +49,49 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     }
   };
 
+  /**
+   * Constructs a BonudCollectionAdapter for a {@link TrackableCollection} using the given viewType.
+   * 
+   * @param data
+   *          the data being wrapped.
+   * @param viewType
+   *          the type of {@link View} to create for each element of the collection.
+   */
   public BoundCollectionAdapter(TrackableCollection<T> data, Class<? extends View> viewType) {
     this(data, viewType, true, false);
   }
 
+  /**
+   * Constructs a BonudCollectionAdapter for a {@link TrackableCollection} using the given viewType.
+   * 
+   * @param data
+   *          the data being wrapped.
+   * @param viewType
+   *          the type of {@link View} to create for each element of the collection.
+   * @param recycleViews
+   *          whether to recycle views.
+   * @param cacheViews
+   *          whether to cache views.
+   */
   public BoundCollectionAdapter(TrackableCollection<T> data, Class<? extends View> viewType,
       boolean recycleViews, boolean cacheViews) {
     this(data, viewType, recycleViews, cacheViews, viewType);
   }
 
+  /**
+   * Constructs a BonudCollectionAdapter for a {@link TrackableCollection} using the given viewType.
+   * 
+   * @param data
+   *          the data being wrapped.
+   * @param viewType
+   *          the type of {@link View} to create for each element of the collection.
+   * @param recycleViews
+   *          whether to recycle views.
+   * @param cacheViews
+   *          whether to cache views.
+   * @param dropDownViewType
+   *          the type of {@link View} to create for dropdowns.
+   */
   public BoundCollectionAdapter(TrackableCollection<T> data, Class<? extends View> viewType,
       boolean recycleViews, boolean cacheViews, Class<? extends View> dropDownViewType) {
     if (cacheViews) {
@@ -88,6 +132,9 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     return this.presentedData.size();
   }
 
+  /**
+   * @return the underlying {@link TrackableCollection}.
+   */
   public TrackableCollection<T> getData() {
     return this.data;
   }
@@ -173,7 +220,8 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     Runnable toRun = new Runnable() {
       @Override
       public void run() {
-        BoundCollectionAdapter.this.presentedData = new TrackableCollection<T>(BoundCollectionAdapter.this.data);
+        BoundCollectionAdapter.this.presentedData = new TrackableCollection<T>(
+            BoundCollectionAdapter.this.data);
 
         if (BoundCollectionAdapter.this.cachedViews != null) {
           Map<T, View> newCache = new HashMap<T, View>();

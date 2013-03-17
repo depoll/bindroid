@@ -12,10 +12,19 @@ import com.bindroid.utils.Function;
 import com.bindroid.utils.ObjectUtilities;
 import com.bindroid.utils.Property;
 
+/**
+ * Represents the "Text" property of an {@link EditText}, allowing for two-way bindings.
+ */
 public class EditTextTextProperty extends Property<String> {
   private Trackable notifier = new Trackable();
   private String lastValue = null;
 
+  /**
+   * Constructs an EditTextTextProperty for an {@link EditText}.
+   * 
+   * @param target
+   *          the text box being bound.
+   */
   public EditTextTextProperty(EditText target) {
     final WeakReference<EditText> weakTarget = new WeakReference<EditText>(target);
     this.propertyType = String.class;
@@ -40,8 +49,7 @@ public class EditTextTextProperty extends Property<String> {
         if (target != null) {
           EditTextTextProperty.this.notifier.track();
           return EditTextTextProperty.this.lastValue = target.getText().toString();
-        }
-        else {
+        } else {
           return EditTextTextProperty.this.lastValue;
         }
       }

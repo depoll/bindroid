@@ -8,6 +8,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Creates a property by reflecting down a property path. ReflectedProperty assumes that a pair of
+ * methods named "get{Name}" and "set{Name}" represent a property called "{Name}".
+ * 
+ * Reflected properties also support complex property paths that include list or map indexes or
+ * nested properties. For example a property path of "Foo.Bar[baz].Bat[1]" is equivalent to calling
+ * <code>getFoo().getBar().get("baz").getBat().get(1)</code>.
+ */
 public class ReflectedProperty extends Property<Object> {
   private static class IndexerPathPart extends PathPart {
     private String indexString;
@@ -158,9 +166,8 @@ public class ReflectedProperty extends Property<Object> {
 
   private static Map<String, PathPart[]> knownPaths;
 
-  private static Method
-      getMethod(Class<?> type, String name, int parameterCount, Class<?>... hints)
-          throws NoSuchMethodException, SecurityException {
+  private static Method getMethod(Class<?> type, String name, int parameterCount, Class<?>... hints)
+      throws NoSuchMethodException, SecurityException {
     for (Method m : type.getMethods()) {
       if (m.getName().equals(name) && m.getParameterTypes().length == parameterCount) {
         boolean matches = true;
@@ -205,6 +212,14 @@ public class ReflectedProperty extends Property<Object> {
   private Object source;
   private PathPart[] parts;
 
+  /**
+   * Constructs a reflected property using the path provided, starting from the source.
+   * 
+   * @param source
+   *          the starting point for the property.
+   * @param path
+   *          the property path that this property will represent for the source.
+   */
   public ReflectedProperty(Object source, String path) {
     this.source = source;
     this.parts = ReflectedProperty.getPathParts(path);

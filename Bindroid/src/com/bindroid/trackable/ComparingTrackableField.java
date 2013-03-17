@@ -3,9 +3,9 @@ package com.bindroid.trackable;
 import com.bindroid.utils.EqualityComparer;
 
 /**
- * A {@link TrackableField} that uses an {@link EqualityComparer} to determine
- * whether a value has changed when calling {@link #set(Object)}. If the value
- * has not changed, no tracking notification is raised.
+ * A {@link TrackableField} that uses an {@link EqualityComparer} to determine whether a value has
+ * changed when calling {@link #set(Object)}. If the value has not changed, no tracking notification
+ * is raised.
  * 
  * @param <T>
  *          The type of the field.

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
 
-
 /**
  * A {@link List} implementation that implements Trackable on all of its methods, notifying
  * {@link Tracker}s whenever a change to the list occurs.

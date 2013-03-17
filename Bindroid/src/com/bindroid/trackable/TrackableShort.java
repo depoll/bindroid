@@ -1,8 +1,8 @@
 package com.bindroid.trackable;
 
 /**
- * Provides a {@link TrackableField}-like implementation for short primitives,
- * allowing you to avoid the cost of boxing and unboxing values.
+ * Provides a {@link TrackableField}-like implementation for short primitives, allowing you to avoid
+ * the cost of boxing and unboxing values.
  */
 public class TrackableShort extends Trackable {
   protected short value;
