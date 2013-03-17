@@ -5,7 +5,7 @@ import java.lang.ref.WeakReference;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.bindroid.Trackable;
+import com.bindroid.trackable.Trackable;
 import com.bindroid.utils.Action;
 import com.bindroid.utils.Function;
 import com.bindroid.utils.Property;

@@ -1,9 +1,10 @@
-package com.bindroid;
+package com.bindroid.trackable;
 
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.bindroid.ObservableCollection;
 import com.bindroid.utils.Action;
 import com.bindroid.utils.Function;
 

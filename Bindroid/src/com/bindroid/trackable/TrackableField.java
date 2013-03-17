@@ -1,5 +1,6 @@
-package com.bindroid;
+package com.bindroid.trackable;
 
+import com.bindroid.ComparingTrackableField;
 import com.bindroid.utils.EqualityComparer;
 import com.bindroid.utils.ObjectUtilities;
 

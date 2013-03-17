@@ -17,8 +17,8 @@ import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.bindroid.ObservableCollection;
-import com.bindroid.Trackable;
-import com.bindroid.Tracker;
+import com.bindroid.trackable.Trackable;
+import com.bindroid.trackable.Tracker;
 import com.bindroid.utils.Action;
 
 public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {

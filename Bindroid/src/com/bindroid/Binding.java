@@ -2,6 +2,8 @@ package com.bindroid;
 
 import java.lang.ref.WeakReference;
 
+import com.bindroid.trackable.Trackable;
+import com.bindroid.trackable.Tracker;
 import com.bindroid.utils.Property;
 import com.bindroid.utils.WeakenedProperty;
 

@@ -6,8 +6,8 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.bindroid.BindingMode;
-import com.bindroid.TrackableField;
 import com.bindroid.converters.ToStringConverter;
+import com.bindroid.trackable.TrackableField;
 import com.bindroid.ui.BoundUi;
 import com.bindroid.ui.UiBinder;
 import com.bindroid.ui.UiProperty;

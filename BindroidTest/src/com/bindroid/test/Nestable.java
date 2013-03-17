@@ -1,6 +1,6 @@
 package com.bindroid.test;
 
-import com.bindroid.TrackableField;
+import com.bindroid.trackable.TrackableField;
 
 public class Nestable {
   private TrackableField<Nestable> child = new TrackableField<Nestable>();

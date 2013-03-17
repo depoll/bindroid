@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bindroid.BindingMode;
-import com.bindroid.TrackableField;
 import com.bindroid.converters.ToStringConverter;
+import com.bindroid.trackable.TrackableField;
 import com.bindroid.ui.CompoundButtonCheckedProperty;
 import com.bindroid.ui.EditTextTextProperty;
 import com.bindroid.ui.UiBinder;

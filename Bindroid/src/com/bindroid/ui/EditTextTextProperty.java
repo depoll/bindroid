@@ -6,7 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.bindroid.Trackable;
+import com.bindroid.trackable.Trackable;
 import com.bindroid.utils.Action;
 import com.bindroid.utils.Function;
 import com.bindroid.utils.ObjectUtilities;

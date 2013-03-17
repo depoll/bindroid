@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.bindroid.ObservableCollection;
-import com.bindroid.TrackableField;
+import com.bindroid.trackable.TrackableField;
 
 public class ViewModel {
   private TrackableField<String> stringValue = new TrackableField<String>("Hello, world!");

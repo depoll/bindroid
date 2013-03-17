@@ -1,4 +1,4 @@
-package com.bindroid;
+package com.bindroid.trackable;
 
 /**
  * Provides an interface for tracking {@link Trackable}s.

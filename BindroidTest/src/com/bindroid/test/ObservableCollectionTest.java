@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import com.bindroid.Binding;
 import com.bindroid.BindingMode;
 import com.bindroid.ObservableCollection;
-import com.bindroid.TrackableField;
+import com.bindroid.trackable.TrackableField;
 import com.bindroid.utils.Function;
 import com.bindroid.utils.Property;
 import com.bindroid.utils.ReflectedProperty;
