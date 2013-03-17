@@ -5,6 +5,10 @@ Bindroid is an open-source utility library for Android apps whose primary goal i
 
 Bindroid dramatically simplifies implementing the [MVVM pattern](http://en.wikipedia.org/wiki/Model_View_ViewModel) when building Android applications, though it can be just as useful even if you're not following this pattern.
 
+Javadocs
+--------
+You can find the Javadocs for Bindroid [here](http://depoll.github.com/bindroid/docs/).
+
 Getting Started
 ---------------
 
