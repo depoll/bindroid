@@ -6,12 +6,12 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.ListView;
 
-import com.bindroid.ObservableCollection;
 import com.bindroid.ValueConverter;
+import com.bindroid.trackable.TrackableCollection;
 import com.bindroid.ui.BoundCollectionAdapter;
 
 /**
- * A {@link ValueConverter} that converts a {@link List} or {@link ObservableCollection} into an
+ * A {@link ValueConverter} that converts a {@link List} or {@link TrackableCollection} into an
  * {@link Adapter} that can be used for {@link ListView}s and other UI widgets.
  */
 public class AdapterConverter extends ValueConverter {
@@ -83,11 +83,11 @@ public class AdapterConverter extends ValueConverter {
   @SuppressWarnings("unchecked")
   @Override
   public Object convertToTarget(Object sourceValue, Class<?> targetType) {
-    ObservableCollection<Object> source;
-    if (sourceValue instanceof ObservableCollection) {
-      source = (ObservableCollection<Object>) sourceValue;
+    TrackableCollection<Object> source;
+    if (sourceValue instanceof TrackableCollection) {
+      source = (TrackableCollection<Object>) sourceValue;
     } else {
-      source = new ObservableCollection<Object>((List<Object>) sourceValue);
+      source = new TrackableCollection<Object>((List<Object>) sourceValue);
     }
     return new BoundCollectionAdapter<Object>(source, this.getViewType(), this.recycleViews,
         this.cacheViews, this.getDropDownViewType());

@@ -29,7 +29,7 @@ public class TrackableBoolean extends Trackable {
    * 
    * @return The value of the TrackableField.
    */
-  public boolean getValue() {
+  public boolean get() {
     this.track();
     return this.value;
   }
@@ -40,7 +40,7 @@ public class TrackableBoolean extends Trackable {
    * @param value
    *          The new value.
    */
-  public void setValue(boolean value) {
+  public void set(boolean value) {
     if (this.value != value) {
       this.value = value;
       this.updateTrackers();
@@ -49,6 +49,6 @@ public class TrackableBoolean extends Trackable {
 
   @Override
   public String toString() {
-    return "" + this.getValue();
+    return "" + this.get();
   }
 }

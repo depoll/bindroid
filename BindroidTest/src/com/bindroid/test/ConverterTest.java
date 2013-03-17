@@ -8,10 +8,10 @@ import android.view.View;
 
 import com.bindroid.Binding;
 import com.bindroid.BindingMode;
-import com.bindroid.ObservableCollection;
 import com.bindroid.converters.AdapterConverter;
 import com.bindroid.converters.BoolConverter;
 import com.bindroid.converters.ToStringConverter;
+import com.bindroid.trackable.TrackableCollection;
 import com.bindroid.trackable.TrackableField;
 import com.bindroid.ui.BoundCollectionAdapter;
 import com.bindroid.utils.Action;
@@ -30,36 +30,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Object.class), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get());
 
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Boolean.TRUE, obj1.getValue());
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set("Anything");
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(false);
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(1);
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(0);
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Boolean.TRUE, obj1.get());
   }
 
   public void testInvertedBoolConverter() {
@@ -69,36 +69,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Object.class), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true));
 
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Boolean.FALSE, obj1.getValue());
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set("Anything");
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(false);
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(1);
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(0);
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Boolean.FALSE, obj1.get());
   }
 
   public void testBoolConverterWithEmptyList() {
@@ -108,36 +108,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Object.class), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(false, true));
 
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Boolean.FALSE, obj1.getValue());
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set("Anything");
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(false);
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(1);
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(0);
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Boolean.FALSE, obj1.get());
   }
 
   public void testInvertedBoolConverterWithEmptyList() {
@@ -147,36 +147,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Object.class), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true, true));
 
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Boolean.FALSE, obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Boolean.TRUE, obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Boolean.TRUE, obj1.getValue());
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set("Anything");
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(false);
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(1);
+    assertEquals(Boolean.FALSE, obj1.get());
+    obj2.set(0);
+    assertEquals(Boolean.TRUE, obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Boolean.TRUE, obj1.get());
   }
 
   public void testVisibilityBoolConverter() {
@@ -186,36 +186,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Integer.TYPE), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get());
 
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set("Anything");
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(false);
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(1);
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(0);
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
   }
 
   public void testVisibilityInvertedBoolConverter() {
@@ -225,36 +225,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Integer.TYPE), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true));
 
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set("Anything");
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(false);
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(1);
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(0);
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
   }
 
   public void testVisibilityBoolConverterWithEmptyList() {
@@ -264,36 +264,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Integer.TYPE), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(false, true));
 
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set("Anything");
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(false);
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(1);
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(0);
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
   }
 
   public void testVisibilityInvertedBoolConverterWithEmptyList() {
@@ -303,36 +303,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Integer.TYPE), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, BoolConverter.get(true, true));
 
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(false);
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(1);
-    assertEquals(Integer.valueOf(View.GONE), obj1.getValue());
-    obj2.setValue(0);
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals(Integer.valueOf(View.VISIBLE), obj1.getValue());
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set("Anything");
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(false);
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(1);
+    assertEquals(Integer.valueOf(View.GONE), obj1.get());
+    obj2.set(0);
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals(Integer.valueOf(View.VISIBLE), obj1.get());
   }
 
   public void testToStringConverter() {
@@ -342,36 +342,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Object.class), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, new ToStringConverter());
 
-    assertEquals("null", obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals("Anything", obj1.getValue());
-    obj2.setValue(false);
-    assertEquals("false", obj1.getValue());
-    obj2.setValue(1);
-    assertEquals("1", obj1.getValue());
-    obj2.setValue(0);
-    assertEquals("0", obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals("[]", obj1.getValue());
+    assertEquals("null", obj1.get());
+    obj2.set("Anything");
+    assertEquals("Anything", obj1.get());
+    obj2.set(false);
+    assertEquals("false", obj1.get());
+    obj2.set(1);
+    assertEquals("1", obj1.get());
+    obj2.set(0);
+    assertEquals("0", obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals("[]", obj1.get());
   }
 
   public void testToStringFormatConverter() {
@@ -381,36 +381,36 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Object.class), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, new ToStringConverter("Whoa there: %s"));
 
-    assertEquals("Whoa there: null", obj1.getValue());
-    obj2.setValue("Anything");
-    assertEquals("Whoa there: Anything", obj1.getValue());
-    obj2.setValue(false);
-    assertEquals("Whoa there: false", obj1.getValue());
-    obj2.setValue(1);
-    assertEquals("Whoa there: 1", obj1.getValue());
-    obj2.setValue(0);
-    assertEquals("Whoa there: 0", obj1.getValue());
-    obj2.setValue(new ArrayList<Object>());
-    assertEquals("Whoa there: []", obj1.getValue());
+    assertEquals("Whoa there: null", obj1.get());
+    obj2.set("Anything");
+    assertEquals("Whoa there: Anything", obj1.get());
+    obj2.set(false);
+    assertEquals("Whoa there: false", obj1.get());
+    obj2.set(1);
+    assertEquals("Whoa there: 1", obj1.get());
+    obj2.set(0);
+    assertEquals("Whoa there: 0", obj1.get());
+    obj2.set(new ArrayList<Object>());
+    assertEquals("Whoa there: []", obj1.get());
   }
 
   public void testAdapterConverter() {
@@ -420,29 +420,29 @@ public class ConverterTest extends TestCase {
     new Binding(new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj1.getValue();
+        return obj1.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj1.setValue(parameter);
+        obj1.set(parameter);
       }
     }, Object.class), new Property<Object>(new Function<Object>() {
       @Override
       public Object evaluate() {
-        return obj2.getValue();
+        return obj2.get();
       }
     }, new Action<Object>() {
       @Override
       public void invoke(Object parameter) {
-        obj2.setValue(parameter);
+        obj2.set(parameter);
       }
     }, Object.class), BindingMode.ONE_WAY, new AdapterConverter(View.class));
 
-    assertNull(obj1.getValue());
-    obj2.setValue(Arrays.asList(1, 2, 3));
-    assertTrue(obj1.getValue() instanceof BoundCollectionAdapter);
-    obj2.setValue(new ObservableCollection<Integer>());
-    assertEquals(((BoundCollectionAdapter<?>) obj1.getValue()).getData(), obj2.getValue());
+    assertNull(obj1.get());
+    obj2.set(Arrays.asList(1, 2, 3));
+    assertTrue(obj1.get() instanceof BoundCollectionAdapter);
+    obj2.set(new TrackableCollection<Integer>());
+    assertEquals(((BoundCollectionAdapter<?>) obj1.get()).getData(), obj2.get());
   }
 }

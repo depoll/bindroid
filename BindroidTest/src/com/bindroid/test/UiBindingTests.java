@@ -34,19 +34,19 @@ public class UiBindingTests extends InstrumentationTestCase {
   }
 
   public boolean getBoolValue() {
-    return boolValue.getValue();
+    return boolValue.get();
   }
 
   public void setBoolValue(boolean value) {
-    boolValue.setValue(value);
+    boolValue.set(value);
   }
 
   public String getStringValue() {
-    return stringValue.getValue();
+    return stringValue.get();
   }
 
   public void setStringValue(String value) {
-    stringValue.setValue(value);
+    stringValue.set(value);
   }
 
   public void testTextViewBinding() throws Exception {

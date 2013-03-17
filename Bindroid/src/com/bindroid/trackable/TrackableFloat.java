@@ -29,7 +29,7 @@ public class TrackableFloat extends Trackable {
    * 
    * @return The value of the TrackableField.
    */
-  public float getValue() {
+  public float get() {
     this.track();
     return this.value;
   }
@@ -40,7 +40,7 @@ public class TrackableFloat extends Trackable {
    * @param value
    *          The new value.
    */
-  public void setValue(float value) {
+  public void set(float value) {
     if (this.value != value) {
       this.value = value;
       this.updateTrackers();
@@ -49,6 +49,6 @@ public class TrackableFloat extends Trackable {
 
   @Override
   public String toString() {
-    return "" + this.getValue();
+    return "" + this.get();
   }
 }

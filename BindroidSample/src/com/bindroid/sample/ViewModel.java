@@ -7,15 +7,15 @@ import java.util.TimerTask;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.bindroid.ObservableCollection;
+import com.bindroid.trackable.TrackableCollection;
 import com.bindroid.trackable.TrackableField;
 
 public class ViewModel {
   private TrackableField<String> stringValue = new TrackableField<String>("Hello, world!");
-  private TrackableField<ObservableCollection<Date>> dates = new TrackableField<ObservableCollection<Date>>();
+  private TrackableField<TrackableCollection<Date>> dates = new TrackableField<TrackableCollection<Date>>();
 
   public ViewModel() {
-    dates.setValue(new ObservableCollection<Date>());
+    dates.set(new TrackableCollection<Date>());
     final Timer timer = new Timer();
     timer.scheduleAtFixedRate(new TimerTask() {
       @Override
@@ -34,15 +34,15 @@ public class ViewModel {
   }
 
   public String getStringValue() {
-    return stringValue.getValue();
+    return stringValue.get();
   }
 
   public void setStringValue(String value) {
-    stringValue.setValue(value);
+    stringValue.set(value);
   }
 
-  public ObservableCollection<Date> getDates() {
-    return dates.getValue();
+  public TrackableCollection<Date> getDates() {
+    return dates.get();
   }
 
   public int getCount() {

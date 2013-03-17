@@ -1,12 +1,11 @@
-package com.bindroid;
+package com.bindroid.trackable;
 
-import com.bindroid.trackable.TrackableField;
 import com.bindroid.utils.EqualityComparer;
 
 /**
- * A {@link TrackableField} that uses an {@link EqualityComparer} to determine whether a value has
- * changed when calling setValue(). If the value has not changed, no tracking notification is
- * raised.
+ * A {@link TrackableField} that uses an {@link EqualityComparer} to determine
+ * whether a value has changed when calling {@link #set(Object)}. If the value
+ * has not changed, no tracking notification is raised.
  * 
  * @param <T>
  *          The type of the field.
@@ -20,7 +19,7 @@ public class ComparingTrackableField<T> extends TrackableField<T> {
   }
 
   @Override
-  public void setValue(T value) {
+  public void set(T value) {
     if (!this.comparer.equals(this.value, value)) {
       this.value = value;
       this.updateTrackers();

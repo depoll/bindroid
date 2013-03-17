@@ -6,21 +6,21 @@ import junit.framework.TestCase;
 
 import com.bindroid.Binding;
 import com.bindroid.BindingMode;
-import com.bindroid.ObservableCollection;
+import com.bindroid.trackable.TrackableCollection;
 import com.bindroid.trackable.TrackableField;
 import com.bindroid.utils.Function;
 import com.bindroid.utils.Property;
 import com.bindroid.utils.ReflectedProperty;
 
-public class ObservableCollectionTest extends TestCase {
+public class TrackableCollectionTest extends TestCase {
   private TrackableField<Object> value = new TrackableField<Object>();
 
   public Object getValue() {
-    return value.getValue();
+    return value.get();
   }
 
   public void setValue(Object value) {
-    this.value.setValue(value);
+    this.value.set(value);
   }
 
   @Override
@@ -30,7 +30,7 @@ public class ObservableCollectionTest extends TestCase {
   }
 
   public void testSizeObservation() {
-    final ObservableCollection<Integer> coll = new ObservableCollection<Integer>();
+    final TrackableCollection<Integer> coll = new TrackableCollection<Integer>();
     new Binding(new ReflectedProperty(this, "Value"), new Property<Integer>(
         new Function<Integer>() {
           @Override
@@ -50,7 +50,7 @@ public class ObservableCollectionTest extends TestCase {
   }
 
   public void testContainsObservation() {
-    final ObservableCollection<Integer> coll = new ObservableCollection<Integer>();
+    final TrackableCollection<Integer> coll = new TrackableCollection<Integer>();
     new Binding(new ReflectedProperty(this, "Value"), new Property<Boolean>(
         new Function<Boolean>() {
           @Override
@@ -72,7 +72,7 @@ public class ObservableCollectionTest extends TestCase {
   }
 
   public void testGetObservation() {
-    final ObservableCollection<Integer> coll = new ObservableCollection<Integer>();
+    final TrackableCollection<Integer> coll = new TrackableCollection<Integer>();
     new Binding(new ReflectedProperty(this, "Value"), new Property<Integer>(
         new Function<Integer>() {
           @Override

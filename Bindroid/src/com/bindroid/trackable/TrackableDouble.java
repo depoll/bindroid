@@ -29,7 +29,7 @@ public class TrackableDouble extends Trackable {
    * 
    * @return The value of the TrackableField.
    */
-  public double getValue() {
+  public double get() {
     this.track();
     return this.value;
   }
@@ -40,7 +40,7 @@ public class TrackableDouble extends Trackable {
    * @param value
    *          The new value.
    */
-  public void setValue(double value) {
+  public void set(double value) {
     if (this.value != value) {
       this.value = value;
       this.updateTrackers();
@@ -49,6 +49,6 @@ public class TrackableDouble extends Trackable {
 
   @Override
   public String toString() {
-    return "" + this.getValue();
+    return "" + this.get();
   }
 }

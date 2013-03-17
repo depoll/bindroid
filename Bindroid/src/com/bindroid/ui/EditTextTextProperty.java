@@ -40,7 +40,8 @@ public class EditTextTextProperty extends Property<String> {
         if (target != null) {
           EditTextTextProperty.this.notifier.track();
           return EditTextTextProperty.this.lastValue = target.getText().toString();
-        } else {
+        }
+        else {
           return EditTextTextProperty.this.lastValue;
         }
       }
@@ -56,7 +57,6 @@ public class EditTextTextProperty extends Property<String> {
           }
         }
       }
-
     };
   }
 }

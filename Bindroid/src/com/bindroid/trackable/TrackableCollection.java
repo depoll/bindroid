@@ -1,4 +1,4 @@
-package com.bindroid;
+package com.bindroid.trackable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
 
-import com.bindroid.trackable.Trackable;
-import com.bindroid.trackable.Tracker;
 
 /**
  * A {@link List} implementation that implements Trackable on all of its methods, notifying
@@ -18,7 +16,7 @@ import com.bindroid.trackable.Tracker;
  * @param <T>
  *          The type of object in the List.
  */
-public class ObservableCollection<T> extends Trackable implements List<T> {
+public class TrackableCollection<T> extends Trackable implements List<T> {
   private List<T> backingStore;
   private List<Long> ids;
   private long curId;
@@ -28,7 +26,7 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
   /**
    * Constructs a new, empty, {@link ArrayList}-backed ObservableCollection.
    */
-  public ObservableCollection() {
+  public TrackableCollection() {
     this(new ArrayList<T>());
   }
 
@@ -38,7 +36,7 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
    * @param backingStore
    *          The list implementation for the ObservableCollection.
    */
-  public ObservableCollection(List<T> backingStore) {
+  public TrackableCollection(List<T> backingStore) {
     this.backingStore = backingStore;
     this.ids = new ArrayList<Long>();
     this.returnedIds = new Stack<Long>();
@@ -54,7 +52,7 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
    * @param toClone
    *          The ObservableCollection to clone.
    */
-  public ObservableCollection(ObservableCollection<T> toClone) {
+  public TrackableCollection(TrackableCollection<T> toClone) {
     this.backingStore = new ArrayList<T>(toClone.backingStore);
     this.ids = new ArrayList<Long>(toClone.ids);
     this.returnedIds = new Stack<Long>();
@@ -259,7 +257,7 @@ public class ObservableCollection<T> extends Trackable implements List<T> {
   @Override
   public List<T> subList(int start, int end) {
     this.trackable.track();
-    return new ObservableCollection<T>(this.backingStore.subList(start, end));
+    return new TrackableCollection<T>(this.backingStore.subList(start, end));
   }
 
   @Override

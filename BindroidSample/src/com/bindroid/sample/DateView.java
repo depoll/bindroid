@@ -25,10 +25,10 @@ public class DateView extends TextView implements BoundUi<Date> {
 
   @Override
   public void bind(Date dataSource) {
-    data.setValue(dataSource);
+    data.set(dataSource);
   }
 
   public Date getDate() {
-    return data.getValue();
+    return data.get();
   }
 }

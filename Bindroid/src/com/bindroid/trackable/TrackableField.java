@@ -1,21 +1,22 @@
 package com.bindroid.trackable;
 
-import com.bindroid.ComparingTrackableField;
 import com.bindroid.utils.EqualityComparer;
 import com.bindroid.utils.ObjectUtilities;
 
 /**
- * Implements a {@link Trackable} that stores a value. A TrackableField calls {@link #track()} when
- * {@link #getValue()} is called and {@link #updateTrackers()} when {@link #setValue(Object)} is
- * called and its value has changed. As a result, TrackableFields are ideal for implementing
- * properties -- most of the time, getters and setters can simply delegate directly to the
- * TrackableField, and the TrackableField replaces the field that would otherwise have been private
+ * Implements a {@link Trackable} that stores a value. A TrackableField calls
+ * {@link #track()} when {@link #get()} is called and {@link #updateTrackers()}
+ * when {@link #set(Object)} is called and its value has changed. As a result,
+ * TrackableFields are ideal for implementing properties -- most of the time,
+ * getters and setters can simply delegate directly to the TrackableField, and
+ * the TrackableField replaces the field that would otherwise have been private
  * on the object. TrackableFields are rarely exposed as a part of a public API.
  * 
- * TrackableFields are meant to be as lightweight as possible in order to avoid overhead when using
- * them for all of the fields of an object. For this reason, if you wish to specify a custom
- * {@link EqualityComparer}, you should use a {@link ComparingTrackableField}, which has the extra
- * field (and thus extra overhead) to store the comparer.
+ * TrackableFields are meant to be as lightweight as possible in order to avoid
+ * overhead when using them for all of the fields of an object. For this reason,
+ * if you wish to specify a custom {@link EqualityComparer}, you should use a
+ * {@link ComparingTrackableField}, which has the extra field (and thus extra
+ * overhead) to store the comparer.
  * 
  * @param <T>
  *          The type of the field.
@@ -50,7 +51,7 @@ public class TrackableField<T> extends Trackable {
    * 
    * @return The value of the TrackableField.
    */
-  public T getValue() {
+  public T get() {
     this.track();
     return this.value;
   }
@@ -61,7 +62,7 @@ public class TrackableField<T> extends Trackable {
    * @param value
    *          The new value.
    */
-  public void setValue(T value) {
+  public void set(T value) {
     if (!TrackableField.comparer.equals(this.value, value)) {
       this.value = value;
       this.updateTrackers();
@@ -70,6 +71,6 @@ public class TrackableField<T> extends Trackable {
 
   @Override
   public String toString() {
-    return "" + this.getValue();
+    return "" + this.get();
   }
 }

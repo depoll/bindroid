@@ -16,14 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
-import com.bindroid.ObservableCollection;
+import com.bindroid.trackable.TrackableCollection;
 import com.bindroid.trackable.Trackable;
 import com.bindroid.trackable.Tracker;
 import com.bindroid.utils.Action;
 
 public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
-  private ObservableCollection<T> data;
-  private ObservableCollection<T> presentedData;
+  private TrackableCollection<T> data;
+  private TrackableCollection<T> presentedData;
   private Class<? extends View> viewType;
   private Class<? extends View> dropDownViewType;
   private Constructor<? extends View> viewConstructor;
@@ -39,23 +39,23 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     }
   };
 
-  public BoundCollectionAdapter(ObservableCollection<T> data, Class<? extends View> viewType) {
+  public BoundCollectionAdapter(TrackableCollection<T> data, Class<? extends View> viewType) {
     this(data, viewType, true, false);
   }
 
-  public BoundCollectionAdapter(ObservableCollection<T> data, Class<? extends View> viewType,
+  public BoundCollectionAdapter(TrackableCollection<T> data, Class<? extends View> viewType,
       boolean recycleViews, boolean cacheViews) {
     this(data, viewType, recycleViews, cacheViews, viewType);
   }
 
-  public BoundCollectionAdapter(ObservableCollection<T> data, Class<? extends View> viewType,
+  public BoundCollectionAdapter(TrackableCollection<T> data, Class<? extends View> viewType,
       boolean recycleViews, boolean cacheViews, Class<? extends View> dropDownViewType) {
     if (cacheViews) {
       this.cachedViews = new HashMap<T, View>();
     }
     this.observers = new LinkedList<DataSetObserver>();
     this.data = data;
-    this.presentedData = new ObservableCollection<T>(data);
+    this.presentedData = new TrackableCollection<T>(data);
     this.viewType = viewType;
     this.dropDownViewType = dropDownViewType;
     try {
@@ -88,7 +88,7 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     return this.presentedData.size();
   }
 
-  public ObservableCollection<T> getData() {
+  public TrackableCollection<T> getData() {
     return this.data;
   }
 
@@ -173,7 +173,7 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
     Runnable toRun = new Runnable() {
       @Override
       public void run() {
-        BoundCollectionAdapter.this.presentedData = new ObservableCollection<T>(BoundCollectionAdapter.this.data);
+        BoundCollectionAdapter.this.presentedData = new TrackableCollection<T>(BoundCollectionAdapter.this.data);
 
         if (BoundCollectionAdapter.this.cachedViews != null) {
           Map<T, View> newCache = new HashMap<T, View>();

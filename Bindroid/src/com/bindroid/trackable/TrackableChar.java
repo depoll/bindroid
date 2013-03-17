@@ -29,7 +29,7 @@ public class TrackableChar extends Trackable {
    * 
    * @return The value of the TrackableField.
    */
-  public char getValue() {
+  public char get() {
     this.track();
     return this.value;
   }
@@ -40,7 +40,7 @@ public class TrackableChar extends Trackable {
    * @param value
    *          The new value.
    */
-  public void setValue(char value) {
+  public void set(char value) {
     if (this.value != value) {
       this.value = value;
       this.updateTrackers();
@@ -49,6 +49,6 @@ public class TrackableChar extends Trackable {
 
   @Override
   public String toString() {
-    return "" + this.getValue();
+    return "" + this.get();
   }
 }
