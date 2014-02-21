@@ -81,10 +81,8 @@ public final class UiBinder {
    */
   public static Binding bind(Activity activity, int targetId, String targetProperty,
       Object sourceObject, String sourceProperty, BindingMode mode, ValueConverter converter) {
-    Binding b = new Binding(UiProperty.make(new WeakReflectedProperty(activity
-        .findViewById(targetId), targetProperty)), new ReflectedProperty(sourceObject,
-        sourceProperty), mode, converter);
-    return b;
+      return bind(activity.findViewById(targetId), targetProperty, sourceObject,
+	       sourceProperty, mode, converter);
   }
 
   /**
@@ -482,6 +480,166 @@ public final class UiBinder {
   public static Binding bind(View view, Property<?> targetProperty, String sourceProperty,
       BindingMode mode) {
     return bind(targetProperty, view, sourceProperty, mode, ValueConverter.getDefaultConverter());
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceObject
+   *          the source object for the binding.
+   * @param sourceProperty
+   *          the property path on the source object to bind.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      Object sourceObject, String sourceProperty) {
+    return UiBinder.bind(targetView, targetProperty, sourceObject, sourceProperty,
+        BindingMode.ONE_WAY, ValueConverter.getDefaultConverter());
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceObject
+   *          the source object for the binding.
+   * @param sourceProperty
+   *          the property path on the source object to bind.
+   * @param mode
+   *          the mode for the binding.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      Object sourceObject, String sourceProperty, BindingMode mode) {
+    return UiBinder.bind(targetView, targetProperty, sourceObject, sourceProperty, mode,
+        ValueConverter.getDefaultConverter());
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceObject
+   *          the source object for the binding.
+   * @param sourceProperty
+   *          the property path on the source object to bind.
+   * @param mode
+   *          the mode for the binding.
+   * @param converter
+   *          the converter for the binding.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      Object sourceObject, String sourceProperty, BindingMode mode, ValueConverter converter) {
+      Binding b = new Binding(UiProperty.make(new WeakReflectedProperty(targetView, targetProperty)),
+        new ReflectedProperty(sourceObject,  sourceProperty), mode, converter);
+    return b;
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the resource ID of the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceObject
+   *          the source object for the binding.
+   * @param sourceProperty
+   *          the property path on the source object to bind.
+   * @param converter
+   *          the converter for the binding.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      Object sourceObject, String sourceProperty, ValueConverter converter) {
+    return UiBinder.bind(targetView, targetProperty, sourceObject, sourceProperty,
+        BindingMode.ONE_WAY, converter);
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceProperty
+   *          the property path on the activity to bind.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      String sourceProperty) {
+    return UiBinder.bind(targetView, targetProperty, sourceProperty, BindingMode.ONE_WAY,
+        ValueConverter.getDefaultConverter());
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceProperty
+   *          the property path on the activity to bind.
+   * @param mode
+   *          the mode for the binding.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      String sourceProperty, BindingMode mode) {
+    return UiBinder.bind(targetView, targetProperty, sourceProperty, mode,
+        ValueConverter.getDefaultConverter());
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceProperty
+   *          the property path on the activity to bind.
+   * @param mode
+   *          the mode for the binding.
+   * @param converter
+   *          the converter for the binding.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      String sourceProperty, BindingMode mode, ValueConverter converter) {
+    return bind(targetView, targetProperty, sourceProperty, mode, converter);
+  }
+
+  /**
+   * Binds a view to the given property.
+   * 
+   * @param targetView
+   *          the target view.
+   * @param targetProperty
+   *          the property path on the target view to bind.
+   * @param sourceProperty
+   *          the property path on the activity to bind.
+   * @param converter
+   *          the converter for the binding.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View targetView, String targetProperty,
+      String sourceProperty, ValueConverter converter) {
+    return UiBinder.bind(targetView, targetProperty, sourceProperty,
+        BindingMode.ONE_WAY, converter);
   }
 
   private UiBinder() {
