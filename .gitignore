@@ -23,3 +23,18 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# OSX files
+.DS_Store
+
+#Windows thumbnail db
+Thumbs.db
+
+# Eclipse project files
+.classpath
+.project
+
+#Android Studio
+.gradle
+build/
+.idea

@@ -10,6 +10,7 @@ import java.util.List;
  */
 public final class GarbageCollectionListener {
   private static List<Action<Void>> listeners;
+
   static {
     GarbageCollectionListener.listeners = new LinkedList<Action<Void>>();
     new WeakReference<GarbageCollectionListener>(new GarbageCollectionListener());
@@ -17,9 +18,8 @@ public final class GarbageCollectionListener {
 
   /**
    * Adds a listener for garbage collections.
-   * 
-   * @param action
-   *          the method to call whenever a garbage collection is detected.
+   *
+   * @param action the method to call whenever a garbage collection is detected.
    */
   public static synchronized void addListener(Action<Void> action) {
     synchronized (listeners) {
@@ -41,9 +41,8 @@ public final class GarbageCollectionListener {
 
   /**
    * Removes a listener for garbage collections.
-   * 
-   * @param action
-   *          the action to remove.
+   *
+   * @param action the action to remove.
    */
   public static synchronized void removeListener(Action<Void> action) {
     synchronized (listeners) {
@@ -55,7 +54,8 @@ public final class GarbageCollectionListener {
   }
 
   @Override
-  protected void finalize() {
+  protected void finalize() throws Throwable {
     GarbageCollectionListener.notifyListeners();
+    super.finalize();
   }
 }

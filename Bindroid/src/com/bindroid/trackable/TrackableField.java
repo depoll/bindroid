@@ -24,7 +24,7 @@ public class TrackableField<T> extends Trackable {
   private static EqualityComparer<Object> comparer;
 
   static {
-    TrackableField.comparer = ObjectUtilities.<Object> getDefaultComparer();
+    TrackableField.comparer = ObjectUtilities.getDefaultComparer();
   }
 
   /**

@@ -39,7 +39,7 @@ public class BoundCollectionAdapter<T> implements ListAdapter, SpinnerAdapter {
   private Constructor<? extends View> viewConstructor;
   private Constructor<? extends View> dropDownViewConstructor;
   private Tracker tracker;
-  private List<DataSetObserver> observers;
+  private final List<DataSetObserver> observers;
   private boolean recycleViews;
   private Map<T, View> cachedViews;
   private Action<Void> trackAction = new Action<Void>() {

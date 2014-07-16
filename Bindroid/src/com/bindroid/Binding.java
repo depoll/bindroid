@@ -147,7 +147,8 @@ public class Binding {
     } catch (Exception e) {
       if (this.isLoggingEnabled) {
         System.err.println("Ignored exception in applySourceToTarget");
-        System.err.println(e);
+          //noinspection ThrowablePrintedToSystemOut
+          System.err.println(e);
       }
     }
   }

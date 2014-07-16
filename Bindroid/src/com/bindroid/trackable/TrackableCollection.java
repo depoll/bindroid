@@ -268,7 +268,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
   @Override
   public <T1> T1[] toArray(T1[] array) {
     this.trackable.track();
-    return this.backingStore.<T1> toArray(array);
+    return this.backingStore.toArray(array);
   }
 
 }
