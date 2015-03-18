@@ -1,5 +1,4 @@
 version = '1.0.0'
-group = 'com.kuhnza'
 
 buildscript {
     repositories {
@@ -7,18 +6,16 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.2'
-        classpath 'com.github.dcendents:android-maven-plugin:1.2'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
     }
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
+    archivesBaseName = "bindroid"
 
     defaultConfig {
         minSdkVersion 14
@@ -31,6 +28,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -76,64 +76,48 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                name 'Bindroid'
-                artifactId 'bindroid'
-                description 'Databinding for Android'
-                packaging 'aar'
-                url 'https://github.com/kuhnza/bindroid'
-
-                scm {
-                    connection 'https://github.com/kuhnza/bindroid.git'
-                    developerConnection 'https://github.com/kuhnza/bindroid.git'
-                    url 'https://github.com/kuhnza/bindroid'
-                }
-
-                licenses {
-                    license {
-                        name 'MIT'
-                        url 'http://opensource.org/licenses/MIT'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'depoll'
-                        name 'David Poll'
-                    }
-                    developer {
-                        id 'kuhnza'
-                        name 'Dave Kuhn'
-                        email 'david.s.kuhn@gmail.com'
-                    }
-                }
-            }
-        }
-    }
+    archives javadocJar, sourcesJar
 }
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-bintray {
-    user = properties.getProperty('bintray.user')
-    key = properties.getProperty('bintray.apikey')
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: 'https://api.bintray.com/maven/kuhnza/maven/bindroid') {
+            bintrayUser = properties.getProperty('bintray.user')
+            bintrayKey = properties.getProperty('bintray.apikey')
+            authentication(userName: bintrayUser, password: bintrayKey)
+        }
 
-    configurations = ['archives']
-    pkg {
-        repo = 'maven'
-        name = 'bindroid'
-        websiteUrl = 'https://github.com/kuhnza/bindroid'
-        vcsUrl = 'https://github.com/kuhnza/bindroid.git'
-        licenses = ['MIT']
-        publish = true
+        pom.groupId = 'com.kuhnza'
+        pom.artifactId = 'bindroid'
+        pom.version = '1.0.0'
+        pom.project {
+            scm {
+                connection 'https://github.com/kuhnza/bindroid.git'
+                developerConnection 'https://github.com/kuhnza/bindroid.git'
+                url 'https://github.com/kuhnza/bindroid'
+            }
+
+            licenses {
+                license {
+                    name 'MIT'
+                    url 'http://opensource.org/licenses/MIT'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'depoll'
+                    name 'David Poll'
+                }
+                developer {
+                    id 'kuhnza'
+                    name 'Dave Kuhn'
+                    email 'david.s.kuhn@gmail.com'
+                }
+            }
+        }
     }
 }
