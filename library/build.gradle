@@ -37,27 +37,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'nl.jqno.equalsverifier:equalsverifier:1.0.2'
-    testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile('org.robolectric:robolectric:2.4') {
-        exclude module: 'classworlds'
-        exclude module: 'commons-logging'
-        exclude module: 'httpclient'
-        exclude module: 'maven-artifact'
-        exclude module: 'maven-artifact-manager'
-        exclude module: 'maven-error-diagnostics'
-        exclude module: 'maven-model'
-        exclude module: 'maven-project'
-        exclude module: 'maven-settings'
-        exclude module: 'plexus-container-default'
-        exclude module: 'plexus-interpolation'
-        exclude module: 'plexus-utils'
-        exclude module: 'wagon-file'
-        exclude module: 'wagon-http-lightweight'
-        exclude module: 'wagon-provider-api'
-    }
 }
 
 task sourcesJar(type: Jar) {
@@ -92,8 +71,11 @@ uploadArchives {
 
         pom.groupId = 'com.kuhnza'
         pom.artifactId = 'bindroid'
-        pom.version = '1.0.0'
+        pom.version = '1.0.1'
         pom.project {
+            name 'Bindroid'
+            description 'Simple data binding for Android'
+
             scm {
                 connection 'https://github.com/kuhnza/bindroid.git'
                 developerConnection 'https://github.com/kuhnza/bindroid.git'
