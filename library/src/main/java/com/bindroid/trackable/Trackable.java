@@ -85,7 +85,7 @@ public class Trackable {
     };
   }
 
-  private LinkedList<Tracker> trackers;
+  private transient LinkedList<Tracker> trackers;
 
   /**
    * Constructs a new Trackable.
