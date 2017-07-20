@@ -468,7 +468,7 @@ public final class UiBinder {
 
   /**
    * Binds a view within a {@link View} to the given property on the View itself.
-   * 
+   *
    * @param view
    *          the parent View.
    * @param targetProperty
@@ -480,8 +480,28 @@ public final class UiBinder {
    * @return the binding produced by this action.
    */
   public static Binding bind(View view, Property<?> targetProperty, String sourceProperty,
-      BindingMode mode) {
+                             BindingMode mode) {
     return bind(targetProperty, view, sourceProperty, mode, ValueConverter.getDefaultConverter());
+  }
+
+  /**
+   * Binds a view within a {@link View} to the given property on the View itself.
+   *
+   * @param view
+   *          the parent View.
+   * @param targetProperty
+   *          the property on the target view to bind.
+   * @param sourceProperty
+   *          the property path on the view to bind.
+   * @param mode
+   *          the mode for the binding.
+   * @param converter
+   *          the converter for the binding.
+   * @return the binding produced by this action.
+   */
+  public static Binding bind(View view, Property<?> targetProperty, String sourceProperty,
+                             BindingMode mode, ValueConverter converter) {
+    return bind(targetProperty, view, sourceProperty, mode, converter);
   }
 
   private UiBinder() {
