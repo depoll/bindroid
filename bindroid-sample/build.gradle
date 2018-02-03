@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
-    compile project(':Bindroid:Bindroid')
+    compile project(':bindroid')
 }
 
 android {

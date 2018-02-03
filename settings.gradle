@@ -1,0 +1,3 @@
+include ':bindroid'
+include ':bindroid-test'
+include ':bindroid-sample'
