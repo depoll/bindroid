@@ -1,9 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 dependencies {
-    compile fileTree(include: '*.jar', dir: 'libs')
-    compile project(':bindroid')
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(include: '*.jar', dir: 'libs')
+    implementation project(':bindroid')
+    implementation project(':bindroid-kotlin')
+    implementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 android {
@@ -33,4 +36,7 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+}
+repositories {
+    mavenCentral()
 }
