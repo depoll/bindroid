@@ -1,5 +1,6 @@
 package com.bindroid.test.kotlin
 
+import android.util.Log
 import com.bindroid.trackable.*
 import com.bindroid.utils.EqualityComparer
 import junit.framework.TestCase
@@ -92,6 +93,9 @@ class TrackableUtilsTest : TestCase() {
         obj.field = 300
         Assert.assertEquals(300, obj.field!!)
         Assert.assertEquals(300, toSet!!)
+        obj.field = null
+        Assert.assertNull(obj.field)
+        Assert.assertNull(toSet)
     }
 
     fun testSetSameValue() {
@@ -217,10 +221,10 @@ class TrackableUtilsTest : TestCase() {
         var toSet: Int = Int.MIN_VALUE
         Assert.assertEquals(Int.MIN_VALUE, obj.field)
         track({ obj.field }) {
+            toSet = it()
             if (toSet == Int.MIN_VALUE) {
                 keepTracking
             }
-            toSet = it()
         }
         Assert.assertEquals(obj.field, toSet)
         obj.field = 150

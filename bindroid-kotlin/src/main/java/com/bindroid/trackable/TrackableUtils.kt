@@ -131,7 +131,7 @@ operator fun TrackableShort.setValue(
     this.set(newValue)
 }
 
-class TrackingScope {
+class TrackingScope<T> {
     val keepTracking: Unit
         get() {
             shouldKeepTracking = true
@@ -142,26 +142,30 @@ class TrackingScope {
         }
     internal var shouldKeepTracking: Boolean = false
     internal var wasCalled: Boolean = false
+    internal var memoized: T? = null
 }
 
-fun <T> track(toTrack: () -> T, action: TrackingScope.(() -> T) -> Unit) {
-    val scope = TrackingScope()
+fun <T> track(toTrack: () -> T, action: TrackingScope<T>.(() -> T) -> Unit) {
+    val scope = TrackingScope<T>()
     val innerTrack = fun(): T {
+        if (scope.wasCalled) {
+            @Suppress("UNCHECKED_CAST")
+            return scope.memoized as T
+        }
         try {
-            if (scope.shouldKeepTracking) {
-                return Trackable.track({
-                    if (scope.shouldKeepTracking) {
-                        track(toTrack, action)
-                    }
-                }, toTrack)
-            }
-            return toTrack()
+            scope.memoized = Trackable.track({
+                if (scope.shouldKeepTracking) {
+                    track(toTrack, action)
+                }
+            }, toTrack)
+            @Suppress("UNCHECKED_CAST")
+            return scope.memoized as T
         } finally {
             scope.wasCalled = true
         }
     }
     scope.action(innerTrack)
-    if (scope.shouldKeepTracking && !scope.wasCalled) {
+    if (!scope.wasCalled) {
         innerTrack()
     }
 }
