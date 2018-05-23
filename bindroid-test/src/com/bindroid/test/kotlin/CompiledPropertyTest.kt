@@ -39,17 +39,11 @@ class CompiledPropertyTest : TestCase() {
     fun testWeakCompiledProperty() {
         var obj = TestObj()
         obj.myProp = "Hello"
-        val property = CompiledProperty(obj weakBind { ::myProp })
+        val property = CompiledProperty(obj weakBind { (::myProp) })
         Assert.assertEquals("Hello", property.value)
+        @Suppress("UNUSED_VALUE")
         obj = TestObj()
         Runtime.getRuntime().gc()
-        var threw = true
-        try {
-            property.value
-            threw = false
-        } catch (e: Exception) {
-            Assert.assertTrue(true)
-        }
-        Assert.assertTrue(threw)
+        Assert.assertNull(property.value)
     }
 }
