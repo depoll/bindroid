@@ -5,8 +5,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 30
 
     sourceSets {
         main {
@@ -30,5 +29,8 @@ android {
         // by a similar customization.
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
+    }
+    defaultConfig {
+        minSdkVersion 4
     }
 }

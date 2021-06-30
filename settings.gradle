@@ -1,3 +1,5 @@
+rootProject.name = 'bindroid'
+
 include ':bindroid', ':bindroid-kotlin'
 include ':bindroid-test'
 include ':bindroid-sample'
