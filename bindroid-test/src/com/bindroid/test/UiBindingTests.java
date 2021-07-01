@@ -1,5 +1,6 @@
 package com.bindroid.test;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.test.InstrumentationTestCase;
@@ -17,6 +18,7 @@ import com.bindroid.ui.UiBinder;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressLint("ResourceType")
 public class UiBindingTests extends InstrumentationTestCase {
     private TrackableField<Boolean> boolValue = new TrackableField<Boolean>(false);
     private TrackableField<String> stringValue = new TrackableField<String>();

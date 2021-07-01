@@ -1,7 +1,12 @@
 apply plugin: 'com.android.library'
 
+group 'com.bindroid'
+version '1.0.0'
+
+repositories {
+    google()
+}
 dependencies {
-    implementation fileTree(include: '*.jar', dir: 'libs')
 }
 
 android {
