@@ -11,103 +11,121 @@ interface TrackableProperty<T>: ReadWriteProperty<Any?, T> {}
 inline fun <reified T: Any?> trackable(initialValue: T, crossinline set: (newValue: T) -> Unit = {}):
         TrackableProperty<T> {
     return when(T::class) {
-        Boolean::class -> object : TrackableProperty<T> {
-            private val storage = TrackableBoolean(initialValue as Boolean)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Boolean::class -> {
+            val storage = TrackableBoolean(initialValue as Boolean)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Boolean)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Boolean)
+                    set(value)
+                }
             }
         }
-        Byte::class -> object : TrackableProperty<T> {
-            private val storage = TrackableByte(initialValue as Byte)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Byte::class -> {
+            val storage = TrackableByte(initialValue as Byte)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Byte)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Byte)
+                    set(value)
+                }
             }
         }
-        Char::class -> object : TrackableProperty<T> {
-            private val storage = TrackableChar(initialValue as Char)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Char::class -> {
+            val storage = TrackableChar(initialValue as Char)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Char)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Char)
+                    set(value)
+                }
             }
         }
-        Double::class -> object : TrackableProperty<T> {
-            private val storage = TrackableDouble(initialValue as Double)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Double::class -> {
+            val storage = TrackableDouble(initialValue as Double)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Double)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Double)
+                    set(value)
+                }
             }
         }
-        Float::class -> object : TrackableProperty<T> {
-            private val storage = TrackableFloat(initialValue as Float)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Float::class -> {
+            val storage = TrackableFloat(initialValue as Float)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Float)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Float)
+                    set(value)
+                }
             }
         }
-        Int::class -> object : TrackableProperty<T> {
-            private val storage = TrackableInt(initialValue as Int)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Int::class -> {
+            val storage = TrackableInt(initialValue as Int)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Int)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Int)
+                    set(value)
+                }
             }
         }
-        Long::class -> object : TrackableProperty<T> {
-            private val storage = TrackableLong(initialValue as Long)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Long::class -> {
+            val storage = TrackableLong(initialValue as Long)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Long)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Long)
+                    set(value)
+                }
             }
         }
-        Short::class -> object : TrackableProperty<T> {
-            private val storage = TrackableShort(initialValue as Short)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property) as T
-            }
+        Short::class -> {
+            val storage = TrackableShort(initialValue as Short)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property) as T
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value as Short)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value as Short)
+                    set(value)
+                }
             }
         }
-        else -> object : TrackableProperty<T> {
-            private val storage = TrackableField<T>(initialValue)
-            override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-                return storage.getValue(thisRef, property)
-            }
+        else -> {
+            val storage = TrackableField<T>(initialValue)
+            object : TrackableProperty<T> {
+                override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+                    return storage.getValue(thisRef, property)
+                }
 
-            override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-                storage.setValue(thisRef, property, value)
-                set(value)
+                override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+                    storage.setValue(thisRef, property, value)
+                    set(value)
+                }
             }
         }
     }
