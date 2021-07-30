@@ -19,7 +19,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
     private List<Long> ids;
     private long curId;
     private Stack<Long> returnedIds;
-    private Trackable trackable = this;
+    private boolean shouldTrack = true;
 
     /**
      * Constructs a new, empty, {@link ArrayList}-backed ObservableCollection.
@@ -34,12 +34,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
      * @param backingStore The list implementation for the ObservableCollection.
      */
     public TrackableCollection(List<T> backingStore) {
-        this.backingStore = backingStore;
-        this.ids = new ArrayList<Long>();
-        this.returnedIds = new Stack<Long>();
-        for (int x = 0; x < backingStore.size(); x++) {
-            this.ids.add(this.getNewId());
-        }
+        replaceBackingStore(backingStore);
     }
 
     /**
@@ -52,13 +47,51 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
         this.backingStore = new ArrayList<T>(toClone.backingStore);
         this.ids = new ArrayList<Long>(toClone.ids);
         this.returnedIds = new Stack<Long>();
+        this.curId = toClone.curId;
+        this.shouldTrack = toClone.shouldTrack;
+    }
+
+    /**
+     * Allows disabling of tracking so that multiple operations can proceed atomically without
+     * notifying trackers.
+     * @param shouldTrack Whether to track
+     */
+    public void setTracking(boolean shouldTrack) {
+        this.shouldTrack = shouldTrack;
+    }
+
+    public boolean isTracking() {
+        return shouldTrack;
+    }
+
+    /**
+     * Replaces the backing store, allowing the array to be replaced atomically without updating
+     * trackers in between changes.
+     *
+     * @param backingStore The new backing store.
+     */
+    public void replaceBackingStore(List<T> backingStore) {
+        this.backingStore = backingStore;
+        this.ids = new ArrayList<Long>();
+        this.returnedIds = new Stack<Long>();
+        for (int x = 0; x < backingStore.size(); x++) {
+            this.ids.add(this.getNewId());
+        }
+        this.updateTrackers();
+    }
+
+    @Override
+    public void updateTrackers() {
+        if (shouldTrack) {
+            super.updateTrackers();
+        }
     }
 
     @Override
     public void add(int location, T object) {
         this.backingStore.add(location, object);
         this.ids.add(location, this.getNewId());
-        this.trackable.updateTrackers();
+        this.updateTrackers();
     }
 
     @Override
@@ -66,7 +99,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
         boolean result = this.backingStore.add(object);
         this.ids.add(this.getNewId());
         if (result) {
-            this.trackable.updateTrackers();
+            this.updateTrackers();
         }
         return result;
     }
@@ -79,7 +112,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
             this.ids.add(this.getNewId());
         }
         if (result) {
-            this.trackable.updateTrackers();
+            this.updateTrackers();
         }
         return result;
     }
@@ -92,7 +125,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
             this.ids.add(this.getNewId());
         }
         if (result) {
-            this.trackable.updateTrackers();
+            this.updateTrackers();
         }
         return result;
     }
@@ -103,24 +136,24 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
         this.ids.clear();
         this.returnedIds.clear();
         this.curId = 0;
-        this.trackable.updateTrackers();
+        this.updateTrackers();
     }
 
     @Override
     public boolean contains(Object object) {
-        this.trackable.track();
+        this.track();
         return this.backingStore.contains(object);
     }
 
     @Override
     public boolean containsAll(Collection<?> arg0) {
-        this.trackable.track();
+        this.track();
         return this.backingStore.containsAll(arg0);
     }
 
     @Override
     public T get(int location) {
-        this.trackable.track();
+        this.track();
         return this.backingStore.get(location);
     }
 
@@ -144,37 +177,37 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
 
     @Override
     public int indexOf(Object object) {
-        this.trackable.track();
+        this.track();
         return this.backingStore.indexOf(object);
     }
 
     @Override
     public boolean isEmpty() {
-        this.trackable.track();
+        this.track();
         return this.backingStore.isEmpty();
     }
 
     @Override
     public Iterator<T> iterator() {
-        this.trackable.track();
+        this.track();
         return this.backingStore.iterator();
     }
 
     @Override
     public int lastIndexOf(Object object) {
-        this.trackable.track();
+        this.track();
         return this.backingStore.lastIndexOf(object);
     }
 
     @Override
     public ListIterator<T> listIterator() {
-        this.trackable.track();
+        this.track();
         return this.backingStore.listIterator();
     }
 
     @Override
     public ListIterator<T> listIterator(int location) {
-        this.trackable.track();
+        this.track();
         return this.backingStore.listIterator(location);
     }
 
@@ -182,7 +215,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
     public T remove(int location) {
         T result = this.backingStore.remove(location);
         this.returnId(this.ids.remove(location));
-        this.trackable.updateTrackers();
+        this.updateTrackers();
         return result;
     }
 
@@ -209,7 +242,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
         boolean result = this.backingStore.removeAll(arg0);
         this.ids.removeAll(toRemove);
         if (result) {
-            this.trackable.updateTrackers();
+            this.updateTrackers();
         }
         return result;
     }
@@ -227,7 +260,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
         boolean result = this.backingStore.retainAll(arg0);
         this.ids.removeAll(toRemove);
         if (result) {
-            this.trackable.updateTrackers();
+            this.updateTrackers();
         }
         return result;
     }
@@ -239,31 +272,31 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
     @Override
     public T set(int location, T object) {
         T result = this.backingStore.set(location, object);
-        this.trackable.updateTrackers();
+        this.updateTrackers();
         return result;
     }
 
     @Override
     public int size() {
-        this.trackable.track();
+        this.track();
         return this.backingStore.size();
     }
 
     @Override
     public List<T> subList(int start, int end) {
-        this.trackable.track();
+        this.track();
         return new TrackableCollection<T>(this.backingStore.subList(start, end));
     }
 
     @Override
     public Object[] toArray() {
-        this.trackable.track();
+        this.track();
         return this.backingStore.toArray();
     }
 
     @Override
     public <T1> T1[] toArray(T1[] array) {
-        this.trackable.track();
+        this.track();
         return this.backingStore.toArray(array);
     }
 

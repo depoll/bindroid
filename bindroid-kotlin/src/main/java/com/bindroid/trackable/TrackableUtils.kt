@@ -311,3 +311,13 @@ fun <T> track(toTrack: () -> T, action: TrackingScope<T>.(() -> T) -> Unit) {
         innerTrack()
     }
 }
+
+inline fun <T> TrackableCollection<T>.transaction(operation: TrackableCollection<T>.() -> Unit) {
+    try {
+        this.isTracking = false
+        this.operation()
+    } finally {
+        this.isTracking = true
+        this.updateTrackers()
+    }
+}
