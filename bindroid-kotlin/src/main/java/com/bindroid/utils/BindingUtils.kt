@@ -91,6 +91,18 @@ inline fun <reified T> View.uibind(
     )
 }
 
+inline fun <reified T> View.bindTo(
+    targetId: Int,
+    targetProperty: String?,
+    noinline sourceGetter: () -> T,
+    converter: ValueConverter = ValueConverter.getDefaultConverter()
+): Binding {
+    return UiBinder.bind(
+        WeakReflectedProperty(this.findViewById(targetId), targetProperty),
+        Property(sourceGetter, null, T::class.java), BindingMode.ONE_WAY, converter
+    )
+}
+
 fun Activity.uibind(
     targetId: Int,
     targetProperty: String?,
@@ -114,5 +126,17 @@ inline fun <reified T> Activity.uibind(
     return UiBinder.bind(
         WeakReflectedProperty(this.findViewById(targetId), targetProperty),
         CompiledProperty(sourceProperty), mode, converter
+    )
+}
+
+inline fun <reified T> Activity.bindTo(
+    targetId: Int,
+    targetProperty: String?,
+    noinline sourceGetter: () -> T,
+    converter: ValueConverter = ValueConverter.getDefaultConverter()
+): Binding {
+    return UiBinder.bind(
+        WeakReflectedProperty(this.findViewById(targetId), targetProperty),
+        Property(sourceGetter, null, T::class.java), BindingMode.ONE_WAY, converter
     )
 }
