@@ -5,8 +5,11 @@ import android.view.View
 import com.bindroid.Binding
 import com.bindroid.BindingMode
 import com.bindroid.ValueConverter
+import com.bindroid.converters.AdapterConverter
 import com.bindroid.ui.UiBinder
+import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty0
 
 /**
  * Creates a binding between any two properties specified in any form.
@@ -23,14 +26,10 @@ fun bind(
 /**
  * Creates a one-way binding of the target property to an observable lambda.
  */
-inline infix fun <reified TProp> (() -> KProperty<TProp>).bind(
+inline infix fun <reified TProp> (() -> KMutableProperty0<TProp>).bind(
     crossinline source: () -> TProp
 ): Binding {
-    val sourceObject = object {
-        val property: TProp
-            get() = source()
-    }
-    return bind(this, { (sourceObject::property) }, BindingMode.ONE_WAY)
+    return bind(CompiledProperty(this), Property<TProp>({ source() }, null), BindingMode.ONE_WAY)
 }
 
 /**
@@ -38,8 +37,8 @@ inline infix fun <reified TProp> (() -> KProperty<TProp>).bind(
  * {@code { (parent.child::childProperty) }}
  */
 inline fun <reified TResult1, reified TResult2> bind(
-    noinline target: () -> KProperty<TResult1>,
-    noinline source: () -> KProperty<TResult2>,
+    noinline target: () -> KProperty0<TResult1>,
+    noinline source: () -> KProperty0<TResult2>,
     mode: BindingMode = BindingMode.ONE_WAY,
     valueConverter: ValueConverter = ValueConverter.getDefaultConverter()
 ): Binding {
@@ -81,7 +80,7 @@ fun View.uibind(
 inline fun <reified T> View.uibind(
     targetId: Int,
     targetProperty: String?,
-    noinline sourceProperty: () -> KProperty<T>,
+    noinline sourceProperty: () -> KProperty0<T>,
     mode: BindingMode = BindingMode.ONE_WAY,
     converter: ValueConverter = ValueConverter.getDefaultConverter()
 ): Binding {
@@ -119,7 +118,7 @@ fun Activity.uibind(
 inline fun <reified T> Activity.uibind(
     targetId: Int,
     targetProperty: String?,
-    noinline sourceProperty: () -> KProperty<T>,
+    noinline sourceProperty: () -> KProperty0<T>,
     mode: BindingMode = BindingMode.ONE_WAY,
     converter: ValueConverter = ValueConverter.getDefaultConverter()
 ): Binding {
@@ -140,3 +139,5 @@ inline fun <reified T> Activity.bindTo(
         Property(sourceGetter, null, T::class.java), BindingMode.ONE_WAY, converter
     )
 }
+
+inline fun <reified T : View> AdapterConverter(): AdapterConverter = AdapterConverter(T::class.java)

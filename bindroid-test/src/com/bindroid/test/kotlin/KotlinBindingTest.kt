@@ -21,7 +21,7 @@ class KotlinBindingTest : TestCase() {
         n2.child = KotlinNestable()
         n2.child!!.value = "Yo!"
 
-        bind({ (n1::value) }, { (n2.child!!::value) }, BindingMode.TWO_WAY)
+        bind({ n1::value }, { n2.child!!::value }, BindingMode.TWO_WAY)
 
         Assert.assertEquals("Yo!", n1.value)
         Assert.assertEquals("Bonjour!", n2.value)
@@ -58,7 +58,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        bind({ (n1::value) }, { (n2::value) }, BindingMode.ONE_WAY)
+        bind({ n1::value }, { n2::value }, BindingMode.ONE_WAY)
 
         Assert.assertEquals("Bonjour!", n1.value)
         Assert.assertEquals("Bonjour!", n2.value)
@@ -76,7 +76,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        bind({ (n1::value) }, { (n2::value) },
+        bind({ n1::value }, { n2::value },
                 BindingMode.ONE_WAY,
                 converter({ targetValue, _ ->
                     if (("" + targetValue).endsWith("bar") || ("" + targetValue).endsWith("foo")) {
@@ -104,7 +104,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        { (n1::value) } bind { n2.value + "Whoa" }
+        { n1::value } bind { n2.value + "Whoa" }
 
         Assert.assertEquals("Bonjour!Whoa", n1.value)
         Assert.assertEquals("Bonjour!", n2.value)
@@ -122,7 +122,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        bind({ (n1::value) }, { (n2::value) },
+        bind({ n1::value }, { n2::value },
                 BindingMode.ONE_WAY_TO_SOURCE,
                 converter({ targetValue, _ ->
                     if (("" + targetValue).endsWith("bar") || ("" + targetValue).endsWith("foo")) {
@@ -150,7 +150,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        bind({ (n1::value) }, { (n2::value) },
+        bind({ n1::value }, { n2::value },
                 BindingMode.TWO_WAY,
                 converter({ targetValue, _ ->
                     if (("" + targetValue).endsWith("bar") || ("" + targetValue).endsWith("foo")) {
@@ -178,7 +178,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        bind({ (n1::value) }, { (n2::value) }, BindingMode.ONE_WAY_TO_SOURCE)
+        bind({ n1::value }, { n2::value }, BindingMode.ONE_WAY_TO_SOURCE)
 
         Assert.assertEquals("Hello!", n1.value)
         Assert.assertEquals("Hello!", n2.value)
@@ -196,7 +196,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        bind({ (n1::value) }, { (n2::value) }, BindingMode.TWO_WAY)
+        bind({ n1::value }, { n2::value }, BindingMode.TWO_WAY)
 
         Assert.assertEquals("Bonjour!", n1.value)
         Assert.assertEquals("Bonjour!", n2.value)
@@ -215,7 +215,7 @@ class KotlinBindingTest : TestCase() {
             val n2 = KotlinNestable()
             n2.value = "Bonjour!"
 
-            val b = bind({ (n1::value) }, { (n2::value) }, BindingMode.TWO_WAY)
+            val b = bind({ n1::value }, { n2::value }, BindingMode.TWO_WAY)
             GCTestUtils.watchPointers(Arrays.asList(n1, n2, b))
         }).get().run()
     }
@@ -226,7 +226,7 @@ class KotlinBindingTest : TestCase() {
         val n2 = KotlinNestable()
         n2.value = "Bonjour!"
 
-        bind({ (n1::value) }, { (n2::value) })
+        bind({ n1::value }, { n2::value })
 
         Runtime.getRuntime().gc()
         Assert.assertEquals("Bonjour!", n1.value)
@@ -250,9 +250,9 @@ class KotlinBindingTest : TestCase() {
             val n2 = KotlinNestable()
             n2.value = "Bonjour!"
 
-            val sourceProperty = CompiledProperty({ (n2::value) })
+            val sourceProperty = CompiledProperty({ n2::value })
 
-            Binding(CompiledProperty({ (n1::value) }), sourceProperty, BindingMode.ONE_WAY)
+            Binding(CompiledProperty({ n1::value }), sourceProperty, BindingMode.ONE_WAY)
 
             Runtime.getRuntime().gc()
             Assert.assertEquals("Bonjour!", n1.value)
@@ -278,9 +278,9 @@ class KotlinBindingTest : TestCase() {
             val n2 = KotlinNestable()
             n2.value = "Bonjour!"
 
-            val targetProperty = CompiledProperty({ (n1::value) })
+            val targetProperty = CompiledProperty({ n1::value })
 
-            Binding(targetProperty, CompiledProperty({ (n2::value) }),
+            Binding(targetProperty, CompiledProperty({ n2::value }),
                     BindingMode.ONE_WAY_TO_SOURCE)
 
             Runtime.getRuntime().gc()

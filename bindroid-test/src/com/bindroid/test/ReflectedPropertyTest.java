@@ -2,6 +2,7 @@ package com.bindroid.test;
 
 import android.annotation.SuppressLint;
 
+import com.bindroid.trackable.TrackableBoolean;
 import com.bindroid.utils.ReflectedProperty;
 
 import junit.framework.TestCase;
@@ -15,6 +16,24 @@ import java.util.Map;
 public class ReflectedPropertyTest extends TestCase {
     private String prop;
     private Map<String, List<Nestable>> weirdMap;
+    private boolean enabled;
+    private boolean enabled2;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean value) {
+        enabled = value;
+    }
+
+    public boolean isEnabled2() {
+        return enabled2;
+    }
+
+    public void setIsEnabled2(boolean value) {
+        enabled2 = value;
+    }
 
     public void setProp(String value) {
         prop = value;
@@ -43,6 +62,19 @@ public class ReflectedPropertyTest extends TestCase {
         property.setValue("Goodbye");
         assertEquals("Goodbye", getProp());
         assertEquals("Goodbye", property.getValue());
+    }
+
+    public void testIsNamedReflectedProperty() {
+        setEnabled(false);
+        setIsEnabled2(false);
+        ReflectedProperty prop = new ReflectedProperty(this, "IsEnabled");
+        assertEquals(false, prop.getValue());
+        prop.setValue(true);
+        assertEquals(true, prop.getValue());
+        ReflectedProperty prop2 = new ReflectedProperty(this, "IsEnabled2");
+        assertEquals(false, prop2.getValue());
+        prop2.setValue(true);
+        assertEquals(true, prop2.getValue());
     }
 
     public void testReadOnlyReflectedProperty() {

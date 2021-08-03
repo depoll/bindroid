@@ -85,6 +85,60 @@ public class ReflectedProperty extends Property<Object> {
         public abstract void setValue(Object root, Object value) throws Exception;
     }
 
+    private static Method getMethodOrNull(Class<?> clazz, String methodName) {
+        try {
+            return clazz.getMethod(methodName);
+        } catch (NoSuchMethodException | SecurityException e) {
+            return null;
+        }
+    }
+
+    private static Method getGetter(Class<?> clazz, String propertyName) {
+        String getterName = "get" + propertyName;
+        Pair<Class<?>, String> id = new Pair<Class<?>, String>(clazz, getterName);
+        Method getter = null;
+        if (knownGetters.containsKey(id)) {
+            getter = knownGetters.get(id);
+        } else {
+            getter = getMethodOrNull(clazz, getterName);
+            if (getter == null && propertyName.startsWith("Is")) {
+                // Try the "Is" form"
+                getter = getMethodOrNull(clazz, propertyName.replaceFirst("Is", "is"));
+            }
+            knownGetters.put(id, getter);
+        }
+        return getter;
+    }
+
+    private static Method getSetter(Class<?> clazz, String propertyName) {
+        Method setter = null;
+        String setterName = "set" + propertyName;
+        Pair<Class<?>, String> setterId = new Pair<Class<?>, String>(clazz, setterName);
+        if (ReflectedProperty.knownSetters.containsKey(setterId)) {
+            setter = ReflectedProperty.knownSetters.get(setterId);
+        } else {
+            Method getter = getGetter(clazz, propertyName);
+            if (getter != null) {
+                setter = getMethodOrNull(clazz, setterName, 1, getter.getReturnType());
+                if (setter == null && propertyName.startsWith("Is")) {
+                    // Try the setter without the "Is" prefix
+                    String noIsPropertyName = propertyName.replaceFirst("Is", "set");
+                    setter = getMethodOrNull(clazz, noIsPropertyName, 1, getter.getReturnType());
+                }
+            }
+            if (setter == null) {
+                setter = getMethodOrNull(clazz, setterName, 1);
+            }
+            if (setter == null && propertyName.startsWith("Is")) {
+                // Try the setter without the "Is" prefix
+                String noIsPropertyName = propertyName.replaceFirst("Is", "set");
+                setter = getMethodOrNull(clazz, noIsPropertyName, 1);
+            }
+            knownSetters.put(setterId, setter);
+        }
+        return setter;
+    }
+
     private static class PropertyPathPart extends PathPart {
         private String propertyName;
 
@@ -94,60 +148,17 @@ public class ReflectedProperty extends Property<Object> {
 
         @Override
         public Class<?> getType(Object root) throws Exception {
-            String getterName = "get" + this.propertyName;
-            Pair<Class<?>, String> id = new Pair<Class<?>, String>(root.getClass(), getterName);
-            Method getter;
-            if (ReflectedProperty.knownGetters.containsKey(id)) {
-                getter = ReflectedProperty.knownGetters.get(id);
-            } else {
-                getter = root.getClass().getMethod(getterName);
-                ReflectedProperty.knownGetters.put(id, getter);
-            }
-            return getter.getReturnType();
+            return getGetter(root.getClass(), propertyName).getReturnType();
         }
 
         @Override
         public Object getValue(Object root) throws Exception {
-            String getterName = "get" + this.propertyName;
-            Pair<Class<?>, String> id = new Pair<Class<?>, String>(root.getClass(), getterName);
-            Method getter;
-            if (ReflectedProperty.knownGetters.containsKey(id)) {
-                getter = ReflectedProperty.knownGetters.get(id);
-            } else {
-                getter = root.getClass().getMethod(getterName);
-                ReflectedProperty.knownGetters.put(id, getter);
-            }
-            return getter.invoke(root);
+            return getGetter(root.getClass(), propertyName).invoke(root);
         }
 
         @Override
         public void setValue(Object root, Object value) throws Exception {
-            Method setter = null;
-            String setterName = "set" + this.propertyName;
-            Pair<Class<?>, String> setterId = new Pair<Class<?>, String>(root.getClass(), setterName);
-            if (ReflectedProperty.knownSetters.containsKey(setterId)) {
-                setter = ReflectedProperty.knownSetters.get(setterId);
-            } else {
-                try {
-                    String getterName = "get" + this.propertyName;
-                    Pair<Class<?>, String> getterId = new Pair<Class<?>, String>(root.getClass(), getterName);
-                    Method getter;
-                    if (ReflectedProperty.knownGetters.containsKey(getterId)) {
-                        getter = ReflectedProperty.knownGetters.get(getterId);
-                    } else {
-                        getter = root.getClass().getMethod(getterName);
-                        ReflectedProperty.knownGetters.put(getterId, getter);
-                    }
-                    setter = ReflectedProperty.getMethod(root.getClass(), setterName, 1,
-                            getter.getReturnType());
-                } catch (Exception e) {
-                }
-                if (setter == null) {
-                    setter = ReflectedProperty.getMethod(root.getClass(), setterName, 1);
-                }
-                ReflectedProperty.knownSetters.put(setterId, setter);
-            }
-            setter.invoke(root, value);
+            getSetter(root.getClass(), propertyName).invoke(root, value);
         }
     }
 
@@ -166,24 +177,25 @@ public class ReflectedProperty extends Property<Object> {
 
     private static Map<String, PathPart[]> knownPaths;
 
-    private static Method getMethod(Class<?> type, String name, int parameterCount, Class<?>... hints)
-            throws NoSuchMethodException, SecurityException {
-        for (Method m : type.getMethods()) {
-            if (m.getName().equals(name) && m.getParameterTypes().length == parameterCount) {
-                boolean matches = true;
-                for (int x = 0; x < hints.length; x++) {
-                    if (hints[x] != null && !m.getParameterTypes()[x].equals(hints[x])) {
-                        matches = false;
-                        break;
+    private static Method getMethodOrNull(Class<?> type, String name, int parameterCount, Class<?>... hints) {
+        try {
+            for (Method m : type.getMethods()) {
+                if (m.getName().equals(name) && m.getParameterTypes().length == parameterCount) {
+                    boolean matches = true;
+                    for (int x = 0; x < hints.length; x++) {
+                        if (hints[x] != null && !m.getParameterTypes()[x].equals(hints[x])) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches) {
+                        return m;
                     }
                 }
-                if (matches) {
-                    return m;
-                }
             }
+        } catch (SecurityException e) {
         }
-        throw new NoSuchMethodException("Cannot find a method called " + name + " on type " + type
-                + " with " + parameterCount + " parameters.");
+        return null;
     }
 
     private static PathPart[] getPathParts(String path) {
