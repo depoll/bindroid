@@ -271,6 +271,8 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
 
     @Override
     public T set(int location, T object) {
+        returnId(ids.get(location));
+        ids.set(location, getNewId());
         T result = this.backingStore.set(location, object);
         this.updateTrackers();
         return result;

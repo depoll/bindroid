@@ -3,6 +3,7 @@
  */
 package com.bindroid.trackable
 
+import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -319,5 +320,40 @@ inline fun <T> TrackableCollection<T>.transaction(operation: TrackableCollection
     } finally {
         this.isTracking = true
         this.updateTrackers()
+    }
+}
+
+fun <T> TrackableCollection<T>.become(newValue: List<T>) {
+    become(newValue) { left, right -> left == right }
+}
+
+// Updates a TrackableCollection, keeping values in place whenever possible
+fun <T> TrackableCollection<T>.become(newValue: List<T>, equals: (left: T, right: T) -> Boolean) {
+    this.transaction {
+        val copy = newValue.toMutableList()
+        var index = 0
+        while (copy.size > 0) {
+            if (index >= size) {
+                this.addAll(copy)
+                break
+            }
+            if (equals(this[index], copy[0])) {
+                // They already match -- skip it
+                this[index] = copy.removeAt(0)
+                index++
+                continue
+            }
+            if (!copy.drop(1).any { equals(this[index], it) }) {
+                // Remove any items that aren't in the new list
+                this.removeAt(index)
+                continue
+            }
+            // The next item isn't at the head of copy, so insert it and continue
+            this.add(index, copy.removeAt(0))
+            index++
+        }
+        while (this.size > newValue.size) {
+            this.removeAt(this.size - 1)
+        }
     }
 }
