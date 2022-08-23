@@ -58,8 +58,9 @@ public class TrackableField<T> extends Trackable {
      * @param value The new value.
      */
     public void set(T value) {
+        boolean update = !TrackableField.comparer.equals(this.value, value);
         this.value = value;
-        if (!TrackableField.comparer.equals(this.value, value)) {
+        if (update) {
             this.updateTrackers();
         }
     }
