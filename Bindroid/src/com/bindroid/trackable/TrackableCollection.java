@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
 /**
@@ -54,6 +55,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
     /**
      * Allows disabling of tracking so that multiple operations can proceed atomically without
      * notifying trackers.
+     *
      * @param shouldTrack Whether to track
      */
     public void setTracking(boolean shouldTrack) {
@@ -189,8 +191,7 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        this.track();
-        return this.backingStore.iterator();
+        return listIterator();
     }
 
     @Override
@@ -201,14 +202,66 @@ public class TrackableCollection<T> extends Trackable implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        this.track();
-        return this.backingStore.listIterator();
+        return listIterator(0);
     }
 
     @Override
     public ListIterator<T> listIterator(int location) {
         this.track();
-        return this.backingStore.listIterator(location);
+        return new ListIterator<T>() {
+            private int curIndex = location - 1;
+
+            @Override
+            public boolean hasNext() {
+                return curIndex < size() - 1;
+            }
+
+            @Override
+            public T next() {
+                if (curIndex >= size() - 1) {
+                    throw new NoSuchElementException();
+                }
+                return get(++curIndex);
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return curIndex > 0;
+            }
+
+            @Override
+            public T previous() {
+                if (curIndex <= 0) {
+                    throw new NoSuchElementException();
+                }
+                return get(--curIndex);
+            }
+
+            @Override
+            public int nextIndex() {
+                return curIndex + 1;
+            }
+
+            @Override
+            public int previousIndex() {
+                return Math.max(curIndex - 1, -1);
+            }
+
+            @Override
+            public void remove() {
+                TrackableCollection.this.remove(curIndex);
+            }
+
+            @Override
+            public void set(T t) {
+                TrackableCollection.this.set(curIndex, t);
+            }
+
+            @Override
+            public void add(T t) {
+                TrackableCollection.this.add(++curIndex, t);
+            }
+        };
     }
 
     @Override
