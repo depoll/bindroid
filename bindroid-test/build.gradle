@@ -10,7 +10,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 17
+    compileSdkVersion 33
 
     sourceSets {
         main {
@@ -38,6 +38,22 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
+    buildFeatures {
+        renderScript true
+        aidl true
+    }
+
+    compileOptions {
+        sourceCompatibility = 17
+        targetCompatibility = 17
+    }
+
+    useLibrary 'android.test.runner'
+
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
+
+    namespace "com.bindroid.test"
 }
 repositories {
     mavenCentral()
