@@ -6,6 +6,7 @@ dependencies {
 }
 
 android {
+    namespace 'com.bindroid.sample'
     compileSdkVersion 17
 
     sourceSets {
