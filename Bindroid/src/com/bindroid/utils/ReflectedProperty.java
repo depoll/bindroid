@@ -93,8 +93,15 @@ public class ReflectedProperty extends Property<Object> {
         }
     }
 
+    private static String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
     private static Method getGetter(Class<?> clazz, String propertyName) {
-        String getterName = "get" + propertyName;
+        String getterName = "get" + capitalize(propertyName);
         Pair<Class<?>, String> id = new Pair<Class<?>, String>(clazz, getterName);
         Method getter = null;
         if (knownGetters.containsKey(id)) {
@@ -112,7 +119,7 @@ public class ReflectedProperty extends Property<Object> {
 
     private static Method getSetter(Class<?> clazz, String propertyName) {
         Method setter = null;
-        String setterName = "set" + propertyName;
+        String setterName = "set" + capitalize(propertyName);
         Pair<Class<?>, String> setterId = new Pair<Class<?>, String>(clazz, setterName);
         if (ReflectedProperty.knownSetters.containsKey(setterId)) {
             setter = ReflectedProperty.knownSetters.get(setterId);

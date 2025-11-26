@@ -9,14 +9,18 @@ repositories {
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'org.robolectric:robolectric:4.9.2'
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
-        minSdkVersion 4
-        targetSdkVersion 33
+        // Updated to satisfy test dependencies' minSdk (e.g., androidx test libs)
+        minSdkVersion 16
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -33,6 +37,10 @@ android {
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
+        }
+        
+        test {
+            java.srcDirs = ['test/java']
         }
 
         // Move the tests to tests/java, tests/res, etc...
@@ -57,6 +65,16 @@ android {
     buildFeatures {
         renderScript true
         aidl true
+    }
+    
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+        unitTests.all {
+            // Ensure JUnit4 is used and available on classpath
+            it.useJUnit()
+        }
     }
 
     namespace "com.bindroid"
