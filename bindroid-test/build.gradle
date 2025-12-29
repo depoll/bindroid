@@ -39,8 +39,8 @@ android {
         minSdkVersion 16
     }
     buildFeatures {
-        renderScript true
-        aidl true
+        renderScript = true
+        aidl = true
     }
 
     compileOptions {
@@ -53,7 +53,7 @@ android {
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
 
-    namespace "com.bindroid.test"
+    namespace = "com.bindroid.test"
 }
 repositories {
     mavenCentral()

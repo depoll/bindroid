@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-group 'com.bindroid'
-version '1.0.0'
+group = 'com.bindroid'
+version = '1.0.0'
 
 android {
     compileSdkVersion 34
@@ -39,7 +39,7 @@ android {
         }
     }
 
-    namespace "com.bindroid.kotlin"
+    namespace = "com.bindroid.kotlin"
 }
 
 dependencies {

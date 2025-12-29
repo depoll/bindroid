@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
-group 'com.bindroid'
-version '1.0.0'
+group = 'com.bindroid'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -63,8 +63,8 @@ android {
         }
     }
     buildFeatures {
-        renderScript true
-        aidl true
+        renderScript = true
+        aidl = true
     }
     
     testOptions {
@@ -77,5 +77,5 @@ android {
         }
     }
 
-    namespace "com.bindroid"
+    namespace = "com.bindroid"
 }
