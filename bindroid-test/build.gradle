@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 dependencies {
     implementation fileTree(include: '*.jar', dir: 'libs')
@@ -10,7 +9,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 35
+    namespace = "com.bindroid.test"
 
     sourceSets {
         main {
@@ -36,7 +36,7 @@ android {
         release.setRoot('build-types/release')
     }
     defaultConfig {
-        minSdkVersion 16
+        minSdk 21
     }
     buildFeatures {
         renderScript = true
@@ -52,8 +52,6 @@ android {
 
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
-
-    namespace = "com.bindroid.test"
 }
 repositories {
     mavenCentral()

@@ -1,15 +1,15 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 group = 'com.bindroid'
 version = '1.0.0'
 
 android {
-    compileSdkVersion 34
+    compileSdk 35
+    namespace = "com.bindroid.kotlin"
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -20,7 +20,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -38,8 +38,6 @@ android {
             java.srcDirs = ['src/test/java', 'src/test/kotlin']
         }
     }
-
-    namespace = "com.bindroid.kotlin"
 }
 
 dependencies {
@@ -48,8 +46,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     api project(':bindroid')
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.robolectric:robolectric:4.11.1'
-    testImplementation 'androidx.test:core:1.5.0'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'androidx.test:core:1.6.1'
 }
 repositories {
     mavenCentral()

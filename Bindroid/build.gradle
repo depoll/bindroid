@@ -10,17 +10,17 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:4.11.0'
-    testImplementation 'org.robolectric:robolectric:4.9.2'
+    testImplementation 'org.mockito:mockito-core:5.15.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
 }
 
 android {
-    compileSdkVersion 34
+    compileSdk 35
+    namespace = "com.bindroid"
 
     defaultConfig {
-        // Updated to satisfy test dependencies' minSdk (e.g., androidx test libs)
-        minSdkVersion 16
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -59,7 +59,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     buildFeatures {
@@ -76,6 +76,4 @@ android {
             it.useJUnit()
         }
     }
-
-    namespace = "com.bindroid"
 }
