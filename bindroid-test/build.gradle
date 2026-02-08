@@ -10,7 +10,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     sourceSets {
         main {
@@ -36,7 +36,7 @@ android {
         release.setRoot('build-types/release')
     }
     defaultConfig {
-        minSdkVersion 16
+        minSdk 16
     }
     buildFeatures {
         renderScript = true
